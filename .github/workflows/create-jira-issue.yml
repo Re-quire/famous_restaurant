@@ -26,6 +26,12 @@ jobs:
         with:
           template-path: .github/ISSUE_TEMPLATE/issue_form.yml
 
+      #템플릿 경로 추적 로그
+      - name: Debug Template Path
+        run:
+          echo "Checking template path: .github/ISSUE_TEMPLATE/issue_form.yml"
+
+
       - name: Log Issue Parser
         run: |
           echo '${{ steps.issue-parser.outputs.jsonString }}'
@@ -56,12 +62,13 @@ jobs:
               }
             }
 
+      # 프로젝트 키 디버깅 메시지
+      - name: Debug Project Key
+        run:
+          echo "Project Key: REQ"
+
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} was created"
-
-      - name: Debug Jira Project Key
-        run:
-          echo "Using Jira Project Key: REQ"
 
       - name: Checkout develop code
         uses: actions/checkout@v4
