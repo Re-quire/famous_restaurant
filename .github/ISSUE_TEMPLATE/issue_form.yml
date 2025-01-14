@@ -24,8 +24,8 @@ body:
   - type: input
     id: branch
     attributes:
-      label: '브랜치 (Branch)'
-      description: '🍃 영어로 브랜치명을 작성해주세요 (예: feature/your-branch)'
+      label: '🍃 브랜치 (Branch)'
+      description: '영어로 브랜치명을 작성해주세요 (예: feature/your-branch)'
       placeholder: 'feature/your-branch'
     validations:
       required: true
