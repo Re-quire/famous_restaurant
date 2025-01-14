@@ -26,6 +26,11 @@ jobs:
         with:
           template-path: .github/ISSUE_TEMPLATE/issue_form.yml
 
+      - name: Debug Template Path
+        run: |
+          ls .github/ISSUE_TEMPLATE/
+          echo "Checking template path: .github/ISSUE_TEMPLATE/issue_form.yml"
+
       - name: Log Issue Parser
         run: |
           echo '${{ steps.issue-parser.outputs.issueparser_parentKey }}'
