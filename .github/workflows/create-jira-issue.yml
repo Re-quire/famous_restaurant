@@ -59,6 +59,10 @@ jobs:
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} was created"
 
+      - name: Debug Jira Project Key
+        run:
+          echo "Using Jira Project Key: REQ"
+
       - name: Checkout develop code
         uses: actions/checkout@v4
         with:
