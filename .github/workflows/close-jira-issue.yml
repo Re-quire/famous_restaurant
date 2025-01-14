@@ -20,8 +20,20 @@ jobs:
       - name: Extract Jira issue key from GitHub issue title
         id: extract-key
         run: |
+          # Extract ISSUE_TITLE from the GitHub event
           ISSUE_TITLE="${{ github.event.issue.title }}"
+          echo "ISSUE_TITLE=$ISSUE_TITLE"
+
+          # Use grep to extract Jira key
           JIRA_KEY=$(echo "$ISSUE_TITLE" | grep -oE '[A-Z]+-[0-9]+')
+
+          # Handle cases where JIRA_KEY is empty
+          if [ -z "$JIRA_KEY" ]; then
+            echo "Error: Jira key not found in ISSUE_TITLE: $ISSUE_TITLE"
+            exit 1
+          fi
+
+          # Output JIRA_KEY to GitHub environment
           echo "JIRA_KEY=$JIRA_KEY" >> $GITHUB_ENV
 
       - name: Close Jira issue
