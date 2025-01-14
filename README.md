@@ -65,8 +65,8 @@ Re:quire's famous restaurant service rep
 # ERD
 
 ---
+![맛집 소모임 ERD](https://github.com/user-attachments/assets/2442f3aa-67db-4933-af94-32f98a855d20)
 
-<img width="509" alt="image" src="https://github.com/user-attachments/assets/c656d335-af9e-4bfd-9c07-40dea71a06aa" />
 
 # 🗺️아키텍처
 
