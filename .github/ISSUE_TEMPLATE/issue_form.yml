@@ -6,7 +6,7 @@ body:
   - type: input
     id: parentKey
     attributes:
-      label: '상위 작업 (Ticket Number)'
+      label: '🌳 상위 작업 (Ticket Number)'
       description: '상위 작업의 Ticket Number를 입력해주세요. (예: KAN-01)'
       placeholder: 'REQ-01'
     validations:
@@ -15,7 +15,7 @@ body:
   - type: input
     id: childKey
     attributes:
-      label: '하위 작업 (Ticket Number - 선택)'
+      label: '🌱 하위 작업 (Ticket Number - 선택)'
       description: 'Jira에 기존 작업이 있다면 해당 Ticket Number를 입력하세요. 없을 경우 새로운 작업이 생성됩니다.'
       placeholder: 'REQ-02'
     validations:
@@ -25,7 +25,7 @@ body:
     id: branch
     attributes:
       label: '브랜치 (Branch)'
-      description: '영어로 브랜치명을 작성해주세요 (예: feature/your-branch)'
+      description: '🍃 영어로 브랜치명을 작성해주세요 (예: feature/your-branch)'
       placeholder: 'feature/your-branch'
     validations:
       required: true
@@ -33,8 +33,17 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: '상세 내용 (Description)'
+      label: '✏️ 상세 내용 (Description)'
       description: '이슈에 대해서 간략히 설명해주세요'
-      placeholder: '이슈에 대한 설명을 작성해주세요'
+      value: |
+        📋 이슈 내용
+        
+        ✅ 체크리스트
+        - [ ] TODO
+        - [ ] TODO
+        - [ ] TODO
+        
+        📚 레퍼런스 (선택)
+
     validations:
       required: true
