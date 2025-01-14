@@ -27,7 +27,8 @@ jobs:
           template-path: .github/ISSUE_TEMPLATE/issue_form.yml
 
       - name: Debug Template Path
-        run: echo "Checking template path: .github/ISSUE_TEMPLATE/issue_form.yml"
+        run:
+        echo "Checking template path: .github/ISSUE_TEMPLATE/issue_form.yml"
 
       - name: Log Issue Parser
         run: |
@@ -60,7 +61,8 @@ jobs:
             }
 
       - name: Debug Project Key
-        run: echo "Project Key: REQ"
+        run:
+        echo "Project Key: REQ"
 
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} was created"
