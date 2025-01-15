@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class yummyApplication {
+public class YummyApplication {
     public static void main(String[] args) {
-        SpringApplication.run(yummyApplication.class, args);
+        SpringApplication.run(YummyApplication.class, args);
     }
 }

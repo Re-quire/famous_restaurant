@@ -1,10 +1,7 @@
 rootProject.name = 'famous_restaurant'
-include 'group'
-include 'region'
-include 'store'
+
 include 'application'
 include 'storage'
-include 'user'
 include 'common'
 include 'domain'
 

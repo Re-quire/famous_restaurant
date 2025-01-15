@@ -28,6 +28,8 @@ test {
 }
 
 bootJar {
+    mainClass = 'com.groom.yummy.YummyApplication'
+    archiveFileName = "yummy_server.jar"
     enabled = true
 }
 
