@@ -7,12 +7,6 @@ plugins {
 group = 'com.goorm'
 version = 'unspecified'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 dependencies {
 
     implementation 'org.projectlombok:lombok'
