@@ -23,7 +23,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     implementation project(':storage')
-    implementation project(':common')
 }
 
 test {

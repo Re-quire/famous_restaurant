@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.info.Info;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,7 +27,7 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("INTIP API명세서")
+                .title("yummy 명세서")
                 .description("api 명세서")
                 .version("1.0.0");
     }
