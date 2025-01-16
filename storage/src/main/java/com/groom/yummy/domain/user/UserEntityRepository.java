@@ -18,6 +18,11 @@ public class UserEntityRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        return userJpaRepository.findById(id).map(UserEntity::toModel);
+    }
+
+    @Override
     public Long save(User user) {
         return userJpaRepository.save(UserEntity.toEntity(user)).getId();
     }
