@@ -1,12 +1,10 @@
 package com.groom.yummy.domain.user;
 
 import com.groom.yummy.domain.BaseEntity;
-import com.groom.yummy.domain.usertogroup.UserToGroupEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
+import com.groom.yummy.user.User;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,25 +28,29 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserToGroupEntity> userGroups;
+    @Column(nullable = false)
+    private String role;
 
-    private UserEntity(String email, String nickname){
-        this.email = email;
-        this.nickname = nickname;
-        this.groupJoinCount = 0L;
-        this.groupAttendanceCount = 0L;
-        this.isDeleted = false;
+    public static User toModel(UserEntity userEntity){
+        return User.builder()
+                .id(userEntity.getId())
+                .nickname(userEntity.nickname)
+                .email(userEntity.getEmail())
+                .role(userEntity.role)
+                .groupAttendanceCount(userEntity.groupAttendanceCount)
+                .groupAttendanceCount(userEntity.groupJoinCount)
+                .isDeleted(userEntity.isDeleted)
+                .build();
     }
 
-    public static UserEntity createNewUser(String email, String nickname) {
-        if (email == null || email.isBlank()) {
-            throw new IllegalStateException("Email must not be null or empty");
-        }
-
-        if (nickname == null || nickname.isBlank()) {
-            throw new IllegalStateException("nickname must not be null or empty");
-        }
-        return new UserEntity(email, nickname);
+    public static UserEntity toEntity(User user){
+        return UserEntity.builder()
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .groupAttendanceCount(user.getGroupAttendanceCount())
+                .groupJoinCount(user.getGroupJoinCount())
+                .isDeleted(user.isDeleted())
+                .build();
     }
 }
