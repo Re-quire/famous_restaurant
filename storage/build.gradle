@@ -16,3 +16,6 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
+tasks.named('bootJar') {
+    enabled = false
+}

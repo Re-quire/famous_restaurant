@@ -2,9 +2,14 @@ package com.groom.yummy.domain.user;
 
 import com.groom.yummy.domain.BaseEntity;
 import com.groom.yummy.user.User;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

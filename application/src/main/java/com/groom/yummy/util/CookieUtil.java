@@ -2,11 +2,10 @@ package com.groom.yummy.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseCookie;
 
 public class CookieUtil {
     public static Cookie createCookie(final String nameOfCookie, final String token,
-                                              final Long cookieValidTime) {
+                                      final Long cookieValidTime) {
         Cookie cookie = new Cookie(nameOfCookie,token);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
