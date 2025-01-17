@@ -76,7 +76,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.addAllowedOrigin("http://localhost:8080");  // 특정 도메인 허용
+        configuration.addAllowedOrigin("http://localhost:8081");  // 특정 도메인 허용
+        configuration.addAllowedOrigin("http://13.124.191.4:8080");  // 특정 도메인 허용
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("ACCESS_TOKEN");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
