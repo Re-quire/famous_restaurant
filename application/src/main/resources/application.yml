@@ -85,6 +85,9 @@ spring:
     valid-time: 7200000
     cookie-name: Authorization
 
+server:
+  port: 8080
+
 ---
 spring:
   config:
