@@ -5,15 +5,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
 
 public class CookieUtil {
-    public static ResponseCookie createCookie(final String nameOfCookie, final String token,
+    public static Cookie createCookie(final String nameOfCookie, final String token,
                                               final Long cookieValidTime) {
-        return ResponseCookie.from(nameOfCookie, token)
-                .path("/")
-                .sameSite("Strict")
-                .secure(true)
-                .maxAge(Math.toIntExact(cookieValidTime))
-                .httpOnly(true)
-                .build();
+        Cookie cookie = new Cookie(nameOfCookie,token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(Math.toIntExact(cookieValidTime));
+        cookie.setSecure(true);
+        return cookie;
     }
 
     public static Cookie getCookie(HttpServletRequest request, String nameOfCookie) {
