@@ -1,5 +1,2 @@
 rootProject.name = 'famous_restaurant'
-include 'application'
-include 'storage'
-include 'common'
-include 'domain'
+include 'application', 'storage', 'common', 'domain'

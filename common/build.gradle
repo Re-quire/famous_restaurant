@@ -8,3 +8,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }
+
+// 'bootJar' 태스크 비활성화
+tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
+    enabled = false
+}
+
+// JAR 태스크 활성화
+tasks.named('jar') {
+    enabled = true
+}
