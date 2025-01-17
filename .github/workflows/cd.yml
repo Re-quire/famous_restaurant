@@ -26,8 +26,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: application.yml 파일 생성
+      - name: application.properties 파일 생성
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application/src/main/resources/application.yml
+             cat ./application/src/main/resources/application.properties
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
         uses: aws-actions/configure-aws-credentials@v4
@@ -41,7 +42,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t my-yummy .
+        run: docker build -t --platform linux/amd64 -t my-yummy .
 
       - name: Docker 이미지에 태그 붙이기
         run: docker tag my-yummy ${{ secrets.ECR_REGISTRY }}/my-yummy:latest
