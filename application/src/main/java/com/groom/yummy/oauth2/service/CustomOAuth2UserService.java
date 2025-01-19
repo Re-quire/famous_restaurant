@@ -29,11 +29,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
+        log.info("oAuth2User key-set : {}", oAuth2User.getAttributes().keySet());
+        System.out.println("ID: " + oAuth2User.getAttributes().get("id"));
+        System.out.println("Connected At: " + oAuth2User.getAttributes().get("connected_at"));
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
         OAuth2Response oAuth2Response = oAuth2ResFactory.createOAuth2Response(registrationId, oAuth2User.getAttributes());
         String email = oAuth2Response.getEmail();
         String nickname = oAuth2Response.getName();
+
         Optional<User> optionalUser = userFacade.findAuthUserByEmail(email);
         User user = userFacade.findOrCreateUser(optionalUser, nickname, email);
         log.info("loadUser : {}", user.getEmail());
