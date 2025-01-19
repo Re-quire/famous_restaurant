@@ -26,9 +26,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: application.properties 파일 생성
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application/src/main/resources/application.yml
-             cat ./application/src/main/resources/application.properties
+#      - name: application.properties 파일 생성
+#        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application/src/main/resources/application.properties
+#             cat ./application/src/main/resources/application.properties
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
         uses: aws-actions/configure-aws-credentials@v4
