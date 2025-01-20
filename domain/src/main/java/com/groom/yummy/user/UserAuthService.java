@@ -29,7 +29,7 @@ public class UserAuthService {
                     .groupAttendanceCount(0L)
                     .isDeleted(false)
                     .build();
-            userRepository.save(user);
+            user = userRepository.save(user);
         }else{
             user = optionalUser.get();
         }

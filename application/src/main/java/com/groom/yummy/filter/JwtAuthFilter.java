@@ -27,26 +27,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = findToken(request);
 
-        // 요청한 URL이 swagger-ui 경로인 경우 바로 필터 통과
-        if (request.getRequestURI().equals("/swagger-ui/index.html")) {
+        if (!verifyToken(request, token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = findToken(request);
-        log.info("token before verify: {}", token);
-        if (verifyToken(request, response, filterChain, token)) return;
-        log.info("token after verify: {}", token);
         User user = getUser(token);
-
         setSecuritySession(user);
         filterChain.doFilter(request, response);
+    }
+
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-resources/");
     }
 
     private static void setSecuritySession(User user){
         LoginUser loginUser = new LoginUser(user);
         log.info("SessionLoginUser : {}", loginUser.getUsername());
+        log.info("SessionLoginUser getAuthorities: {}", loginUser.getAuthorities());
         Authentication authToken = new UsernamePasswordAuthenticationToken(loginUser,null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
@@ -66,18 +67,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .build();
     }
 
-    private boolean verifyToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, String token) throws IOException, ServletException {
-        if (token == null) {
+    private boolean verifyToken(HttpServletRequest request,String token) throws IOException, ServletException {
+        Boolean isValid = (Boolean) request.getAttribute("isTokenValid");
+        if(isValid != null) return isValid;
+
+        if (token == null || jwtProvider.validateToken(token)) {
             log.debug("token null");
-            filterChain.doFilter(request, response);
-            return true;
+            request.setAttribute("isTokenValid",false);
+            //filterChain.doFilter(request, response);
+            return false;
         }
-        if (jwtProvider.validateToken(token)) {
-            log.debug("token expired");
-            filterChain.doFilter(request, response);
-            return true;
-        }
-        return false;
+//        if (jwtProvider.validateToken(token)) {
+//            log.debug("token expired");
+//            //filterChain.doFilter(request, response);
+//            return true;
+//        }
+        request.setAttribute("isTokenValid", true);
+        return true;
     }
 
     private static String findToken(HttpServletRequest request){

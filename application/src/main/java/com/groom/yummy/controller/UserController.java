@@ -1,9 +1,9 @@
 package com.groom.yummy.controller;
 
+import com.groom.yummy.dto.ResponseDto;
 import com.groom.yummy.dto.request.UpdateNicknameReqDto;
 import com.groom.yummy.dto.response.UserInfoResDto;
 import com.groom.yummy.facade.UserFacade;
-import com.groom.yummy.dto.ResponseDto;
 import com.groom.yummy.oauth2.auth.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,11 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "[User] User API")
-@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/users")
