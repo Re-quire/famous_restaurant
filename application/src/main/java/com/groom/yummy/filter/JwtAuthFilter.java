@@ -74,14 +74,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (token == null || jwtProvider.validateToken(token)) {
             log.debug("token null");
             request.setAttribute("isTokenValid",false);
-            //filterChain.doFilter(request, response);
             return false;
         }
-//        if (jwtProvider.validateToken(token)) {
-//            log.debug("token expired");
-//            //filterChain.doFilter(request, response);
-//            return true;
-//        }
+
         request.setAttribute("isTokenValid", true);
         return true;
     }

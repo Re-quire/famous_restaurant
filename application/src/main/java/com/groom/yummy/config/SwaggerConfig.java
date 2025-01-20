@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-//    @Value("${dev-host}")
-//    private String serverHost;
+    @Value("${server.url}")
+    private String SERVER_URL;
 
     @Bean
     public OpenAPI openAPI() {
@@ -33,7 +34,7 @@ public class SwaggerConfig {
 
     private List<Server> servers() {
         List<Server> servers = new ArrayList<>();
-        servers.add(new Server().url("http://localhost:8081").description("Local URL"));
+        servers.add(new Server().url(SERVER_URL).description("YUMMY 명세서"));
         return servers;
     }
 }

@@ -40,7 +40,7 @@ spring:
 
 server:
   port: 8081
-
+  url: http://localhost:8081
 ---
 
 spring:
@@ -89,6 +89,7 @@ spring:
 
 server:
   port: 8080
+  url: https://52.78.217.57.nip.io
 
 ---
 spring:

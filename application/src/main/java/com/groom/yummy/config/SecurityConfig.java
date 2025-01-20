@@ -8,6 +8,7 @@ import com.groom.yummy.oauth2.handler.CustomSuccessHandler;
 import com.groom.yummy.oauth2.service.CustomOAuth2UserService;
 import com.groom.yummy.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +32,8 @@ public class SecurityConfig {
     private final JwtProvider jwtUtil;
     private final ObjectMapper objectMapper;
 
+    @Value("${server.url}")
+    private String SERVER_URL;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -76,7 +79,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.addAllowedOrigin("http://localhost:8081");  // 특정 도메인 허용
+        configuration.addAllowedOrigin(SERVER_URL);  // 특정 도메인 허용
         configuration.addAllowedOrigin("http://13.124.191.4:8080");  // 특정 도메인 허용
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("ACCESS_TOKEN");

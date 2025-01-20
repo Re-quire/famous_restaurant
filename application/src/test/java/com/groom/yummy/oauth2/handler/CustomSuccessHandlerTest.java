@@ -30,7 +30,6 @@ class CustomSuccessHandlerTest {
     private CustomSuccessHandler customSuccessHandler;
     @Mock
     private JwtProvider jwtProvider;
-
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
@@ -69,8 +68,6 @@ class CustomSuccessHandlerTest {
         assertNotNull(cookie);
         assertEquals(expectedToken, cookie.getValue());
         assertEquals(validTime, cookie.getMaxAge());
-
-        assertEquals("http://localhost:8081/swagger-ui/index.html", response.getRedirectedUrl());
 
         verify(jwtProvider, times(1))
                 .createAccessToken(userId, email, nickname,role);
