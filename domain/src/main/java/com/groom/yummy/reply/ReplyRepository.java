@@ -1,6 +1,5 @@
 package com.groom.yummy.reply;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +10,5 @@ public interface ReplyRepository {
 	Optional<Reply> save(Reply reply);
 	Page<Reply> findAllByParentId(Long parentId, Pageable pageable);
 	Page<Reply> findByGroupId(Long groupId, Pageable pageable);
-
 	void deleteById(Long id);
 }

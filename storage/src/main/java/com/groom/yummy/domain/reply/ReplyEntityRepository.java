@@ -1,6 +1,5 @@
 package com.groom.yummy.domain.reply;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class ReplyRepositoryImpl implements ReplyRepository {
+public class ReplyEntityRepository implements ReplyRepository {
 
 	private final ReplyJpaRepository replyRepository;
 	private final UserJpaRepository userRepository;
