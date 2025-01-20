@@ -1,4 +1,4 @@
-package com.groom.yummy.domain.store;
+package com.groom.yummy.store;
 
 import lombok.Getter;
 
@@ -37,5 +37,9 @@ public enum Category {
     @Override
     public String toString() {
         return String.format("%s (%s) ", apiCode, description);
+    }
+
+    public static boolean isValidCategory(Category category) {
+        return API_CODE_TO_CATEGORY.containsValue(category);
     }
 }

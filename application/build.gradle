@@ -7,38 +7,54 @@ plugins {
 version = '0.0.1-SNAPSHOT'
 
 dependencies {
+    // Project Dependencies
     runtimeOnly project(':storage')
     compileOnly project(':domain')
     testImplementation project(':domain')
     implementation project(':common')
 
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.11.0'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-
-    // Swagger
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // OAuth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-    // jwt
+    // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    // Database
     runtimeOnly 'com.h2database:h2'
 
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing Dependencies
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+    // Mocking and JSON Processing
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.11.0'
+    testImplementation 'org.mockito:mockito-core:5.6.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    // Netty
+    implementation "io.netty:netty-resolver-dns-native-macos:4.1.110.Final:osx-x86_64"
 }
+
 
 test {
     useJUnitPlatform()

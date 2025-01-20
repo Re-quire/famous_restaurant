@@ -1,15 +1,14 @@
 package com.groom.yummy.domain.store;
 
 import com.groom.yummy.domain.BaseEntity;
-import com.groom.yummy.domain.group.GroupEntity;
 import com.groom.yummy.domain.region.RegionEntity;
+import com.groom.yummy.store.Category;
+import com.groom.yummy.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,7 +24,6 @@ public class StoreEntity extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id", nullable = false)
     private RegionEntity region;
@@ -36,13 +34,23 @@ public class StoreEntity extends BaseEntity {
         this.region = region;
     }
 
-    private StoreEntity(String name, Category category, RegionEntity region, List<GroupEntity> groups) {
-        this.name = name;
-        this.category = category;
-        this.region = region;
+    public static Store toStoreDomain(StoreEntity storeEntity) {
+        return Store.builder()
+                .storeId(storeEntity.getId())
+                .name(storeEntity.getName())
+                .regionId(storeEntity.getRegion().getId())
+                .category(storeEntity.getCategory())
+                .build();
     }
 
-    // 필수 필드만 생성
+    public static StoreEntity fromStoreDomain(Store store, RegionEntity region) {
+        return StoreEntity.builder()
+                .name(store.getName())
+                .category(store.getCategory())
+                .region(region)
+                .build();
+    }
+
     public static StoreEntity create(String name, Category category, RegionEntity region) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Store name must not be null or blank");
@@ -56,9 +64,4 @@ public class StoreEntity extends BaseEntity {
         return new StoreEntity(name, category, region);
     }
 
-    // 그룹 포함 생성
-    private static StoreEntity createWithGroups(String name, Category category, RegionEntity region, List<GroupEntity> groups) {
-        StoreEntity store = create(name, category, region);
-        return store;
-    }
 }

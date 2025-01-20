@@ -1,4 +1,4 @@
-package com.groom.yummy.domain.group;
+package com.groom.yummy.group;
 
 import lombok.Getter;
 
