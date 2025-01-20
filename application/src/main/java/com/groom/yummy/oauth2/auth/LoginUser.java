@@ -14,6 +14,9 @@ public class LoginUser implements UserDetails, OAuth2User{
     private final User user;
     private Map<String, Object> attributes;
 
+    public LoginUser(User user){
+        this.user = user;
+    }
     public LoginUser(User user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
@@ -43,6 +46,8 @@ public class LoginUser implements UserDetails, OAuth2User{
     public String getRole(){
         return user.getRole();
     }
+
+    public Long getUserId(){return user.getId();}
 
     @Override
     public String getPassword() {

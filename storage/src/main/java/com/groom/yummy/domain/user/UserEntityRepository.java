@@ -1,9 +1,9 @@
 package com.groom.yummy.domain.user;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -13,13 +13,13 @@ public class UserEntityRepository implements UserRepository {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userJpaRepository.findByEmail(email).map(UserEntity::toModel);
+    public Optional<User> findById(Long userId) {
+        return userJpaRepository.findById(userId).map(UserEntity::toModel);
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userJpaRepository.findById(id).map(UserEntity::toModel);
+    public Optional<User> findByEmail(String email) {
+        return userJpaRepository.findByEmail(email).map(UserEntity::toModel);
     }
 
     @Override

@@ -7,13 +7,13 @@ import lombok.Getter;
 
 @Getter
 public class Reply {
-	private final Long id;
-	private final String content;
-	private final Long parentReplyId;
-	private final Long userId;
-	private final Long groupId;
-	private final LocalDateTime createdAt;
-	private final LocalDateTime updatedAt;
+	private Long id;
+	private String content;
+	private Long parentReplyId;
+	private Long userId;
+	private Long groupId;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	@Builder
 	public Reply(Long id, String content, Long parentReplyId, Long userId, Long groupId, LocalDateTime createdAt,
@@ -26,4 +26,10 @@ public class Reply {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
+
+	protected void updateReply(String content) {
+		this.content = content;
+		this.updatedAt = LocalDateTime.now();
+	}
+
 }
