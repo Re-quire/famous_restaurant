@@ -36,4 +36,9 @@ public class ReplyService {
 	public Page<Reply> getAllReplies(Long groupId, Pageable pageable) {
 		return replyRepository.findByGroupId(groupId, pageable);
 	}
+
+	@Transactional
+	public void deleteReply(Long id) {
+		replyRepository.deleteById(id);
+	}
 }

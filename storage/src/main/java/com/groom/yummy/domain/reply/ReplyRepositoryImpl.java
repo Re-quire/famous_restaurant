@@ -30,8 +30,8 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 	}
 
 	@Override
-	public List<Reply> findAllByParentId(Long parentId) {
-		return List.of();
+	public Page<Reply> findAllByParentId(Long parentId, Pageable pageable) {
+		return replyRepository.findByParentReplyId(parentId, pageable).map(ReplyEntity::toModel);
 	}
 
 	@Override
@@ -47,6 +47,16 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 	@Override
 	public Page<Reply> findByGroupId(Long groupId, Pageable pageable) {
 		return replyRepository.findByGroupId(groupId, pageable).map(ReplyEntity::toModel);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		// 자식 댓글 존재 여부 확인
+		if (replyRepository.existsByParentReplyId(id)) {
+			throw new IllegalStateException("자식 댓글이 존재하여 삭제할 수 없습니다. ID: " + id);
+		}
+
+		replyRepository.deleteById(id);
 	}
 
 	// 부모 댓글 조회

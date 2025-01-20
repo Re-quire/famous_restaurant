@@ -8,4 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReplyJpaRepository extends JpaRepository<ReplyEntity, Long> {
 	Page<ReplyEntity> findByGroupId(Long groupId, Pageable pageable);
+
+	Page<ReplyEntity> findByParentReplyId(Long parentId, Pageable pageable);
+
+	boolean existsByParentReplyId(Long id);
 }

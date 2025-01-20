@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReplyRepository {
 	Optional<Reply> findById(Long id);
-	List<Reply> findAllByParentId(Long parentId);
 	Optional<Reply> save(Reply reply);
+	Page<Reply> findAllByParentId(Long parentId, Pageable pageable);
 	Page<Reply> findByGroupId(Long groupId, Pageable pageable);
+
+	void deleteById(Long id);
 }
