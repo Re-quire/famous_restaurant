@@ -1,6 +1,7 @@
 package com.groom.yummy.domain.region;
 
 import com.groom.yummy.domain.BaseEntity;
+import com.groom.yummy.region.Region;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,5 +26,20 @@ public class RegionEntity extends BaseEntity {
     public RegionEntity(String regionName, String regionCode) {
         this.regionName = regionName;
         this.regionCode = regionCode;
+    }
+
+    public Region toRegionDomain() {
+        return Region.builder()
+                .id(this.getId())
+                .regionName(this.regionName)
+                .regionCode(this.regionCode)
+                .build();
+    }
+
+    public static RegionEntity fromRegionDomain(Region region) {
+        if (region == null) {
+            throw new IllegalArgumentException("지역 설정은 필수입니다.");
+        }
+        return new RegionEntity(region.getRegionName(), region.getRegionCode());
     }
 }
