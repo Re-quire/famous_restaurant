@@ -18,7 +18,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updateNickname(Long userId,String nickname){
+    public User updateNickname(Long userId, String nickname){
         User user = userRepository.findById(userId).orElseThrow();
         user.changeNickname(nickname);
         eventPublisher.publish(new UserNicknameChangedEvent(user.getId(),user.getNickname()));

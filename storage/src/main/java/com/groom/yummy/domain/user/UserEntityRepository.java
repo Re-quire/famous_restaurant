@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserEntityRepository implements UserRepository {
+public class UserEntityRepository implements UserRepository  {
     private final UserJpaRepository userJpaRepository;
 
     @Override
@@ -23,7 +23,8 @@ public class UserEntityRepository implements UserRepository {
     }
 
     @Override
-    public Long save(User user) {
-        return userJpaRepository.save(UserEntity.toEntity(user)).getId();
+    public User save(User user) {
+        UserEntity userEntity = userJpaRepository.save(UserEntity.toEntity(user));
+        return UserEntity.toModel(userEntity);
     }
 }
