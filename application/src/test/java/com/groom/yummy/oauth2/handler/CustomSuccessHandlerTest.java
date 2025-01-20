@@ -70,7 +70,11 @@ class CustomSuccessHandlerTest {
         assertEquals(expectedToken, cookie.getValue());
         assertEquals(validTime, cookie.getMaxAge());
 
+<<<<<<< HEAD
         assertEquals("http://localhost:8081/swagger-ui/index.html", response.getRedirectedUrl());
+=======
+        assertEquals("http://localhost:8080/swagger-ui/index.html", response.getRedirectedUrl());
+>>>>>>> dev
 
         verify(jwtProvider, times(1))
                 .createAccessToken(userId, email, nickname,role);
