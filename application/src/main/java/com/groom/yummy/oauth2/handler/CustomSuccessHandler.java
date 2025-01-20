@@ -33,6 +33,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtProvider.createAccessToken(userId,email,nickname,role);
 
         response.addCookie(CookieUtil.createCookie(jwtProvider.COOKIE_NAME,accessToken,jwtProvider.VALID_TIME));
-        response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
+        response.sendRedirect("http://localhost:8081/swagger-ui/index.html");
     }
 }
