@@ -2,6 +2,8 @@ package com.groom.yummy.domain.group;
 
 import com.groom.yummy.domain.BaseEntity;
 import com.groom.yummy.domain.store.StoreEntity;
+import com.groom.yummy.group.Group;
+import com.groom.yummy.group.MeetingStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -55,5 +57,32 @@ public class GroupEntity extends BaseEntity {
         this.meetingDate = meetingDate;
         this.meetingStatus = meetingStatus;
         this.store = store;
+    }
+
+    public static Group toGroupDomain(GroupEntity groupEntity) {
+        return Group.builder()
+                .id(groupEntity.getId())
+                .title(groupEntity.getTitle())
+                .content(groupEntity.getContent())
+                .maxParticipants(groupEntity.getMaxParticipants())
+                .minParticipants(groupEntity.getMinParticipants())
+                .currentParticipants(groupEntity.getCurrentParticipants())
+                .meetingDate(groupEntity.getMeetingDate())
+                .meetingStatus(groupEntity.getMeetingStatus())
+                .storeId(groupEntity.getStore().getId())
+                .build();
+    }
+
+    public static GroupEntity fromGroupDomain(Group group, StoreEntity store) {
+        return GroupEntity.builder()
+                .title(group.getTitle())
+                .content(group.getContent())
+                .maxParticipants(group.getMaxParticipants())
+                .minParticipants(group.getMinParticipants())
+                .currentParticipants(group.getCurrentParticipants())
+                .meetingDate(group.getMeetingDate())
+                .meetingStatus(group.getMeetingStatus())
+                .store(store)
+                .build();
     }
 }
