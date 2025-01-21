@@ -1,6 +1,7 @@
-package com.groom.yummy.exception;
+package com.groom.yummy.exception.handler;
 
 import com.groom.yummy.dto.ResponseDto;
+import com.groom.yummy.exception.CustomException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,20 +17,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @Hidden
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class RestControllerExceptionHandler {
 
+    /* 컨트롤러 메서드의 파라미터나 엔터티 필드에서 유효성 검사가 실패 */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ResponseDto<Integer>> handleConstraintViolationException(ConstraintViolationException ex){
         log.error("유효성 검사 예외 발생 msg: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDto.of(-1, ex.getMessage()));
     }
 
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ResponseDto<Integer>> CustomException(CustomException ex){
-        log.error("커스텀 예외 발생 msg: {}", ex.getErrorCode().getMessage());
-        return ResponseEntity.status(ex.getErrorCode().getCode()).body(ResponseDto.of(-1,ex.getErrorCode().getMessage()));
-    }
-
+    /* @RequestBody 로 들어오는 JSON 요청 객체의 필드 값이 유효성 검사에 실패 */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto<Integer>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         BindingResult bindingResult = ex.getBindingResult();
@@ -39,18 +36,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDto.of(-1,message));
     }
 
+    /* 클라이언트에서 잘못된 JSON 형식의 요청을 보낼 때 발생 */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ResponseDto<Integer>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         String errorMessage = "요청한 JSON 데이터를 읽을 수 없습니다: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDto.of(-1,errorMessage));
-    }
-    // 기타예외 발생 시 500반환
-    @ExceptionHandler
-    public ResponseEntity<ResponseDto> handleException(Exception ex) {
-
-        String message = "서버 내부에 에러가 발생했습니다.";
-        log.error(message+":"+ex.getMessage()+ex.getStackTrace()+ex.getCause());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(-1,ex.getMessage()));
     }
 }
 

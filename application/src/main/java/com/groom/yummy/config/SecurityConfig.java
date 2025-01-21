@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .userService(customOAuth2UserService)).successHandler(customSuccessHandler));
 
         // JWTFilter 추가
-        http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthFilter(jwtUtil,objectMapper), UsernamePasswordAuthenticationFilter.class);
 
         // Exception handler 추가
         http.exceptionHandling(exceptionHandling ->

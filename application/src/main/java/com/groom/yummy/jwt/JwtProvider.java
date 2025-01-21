@@ -1,5 +1,7 @@
 package com.groom.yummy.jwt;
 
+import com.groom.yummy.exception.CustomException;
+import com.groom.yummy.exception.JwtErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +29,8 @@ public class JwtProvider {
 
     public String createAccessToken(Long userId, String email, String nickname, String role){
         Date timeNow = new Date(System.currentTimeMillis());
-        log.info("timeNow : {}", timeNow);
         Date expirationTime = new Date(timeNow.getTime() + VALID_TIME);
-        log.info("expirationTime: {}", expirationTime);
+
         return Jwts.builder()
                 .claim("userId", userId)
                 .claim("email",email)
@@ -68,13 +69,13 @@ public class JwtProvider {
             Jws<Claims> claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
             return claims.getBody().getExpiration().before(new Date());
         }catch (SignatureException ex){
-            throw new RuntimeException();
+            throw new CustomException(JwtErrorCode.WRONG_TYPE_TOKEN);
         }catch (MalformedJwtException ex){
-            throw new RuntimeException();
+            throw new CustomException(JwtErrorCode.UNSUPPORTED_TOKEN);
         }catch (ExpiredJwtException ex){
-            throw new RuntimeException();
+            throw new CustomException(JwtErrorCode.EXPIRED_TOKEN);
         }catch (IllegalArgumentException ex){
-            throw new RuntimeException();
+            throw new CustomException(JwtErrorCode.WRONG_TYPE_TOKEN);
         }
     }
 
