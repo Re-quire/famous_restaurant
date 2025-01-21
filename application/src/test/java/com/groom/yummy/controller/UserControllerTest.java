@@ -2,13 +2,12 @@ package com.groom.yummy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groom.yummy.config.SecurityConfig;
-import com.groom.yummy.dto.request.UpdateNicknameReqDto;
-import com.groom.yummy.dto.response.UserInfoResDto;
-import com.groom.yummy.facade.UserFacade;
+import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
+import com.groom.yummy.user.dto.response.UserInfoResDto;
+import com.groom.yummy.user.facade.UserFacade;
 import com.groom.yummy.jwt.JwtProvider;
 import com.groom.yummy.oauth2.handler.CustomSuccessHandler;
 import com.groom.yummy.oauth2.service.CustomOAuth2UserService;
-import com.groom.yummy.user.User;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

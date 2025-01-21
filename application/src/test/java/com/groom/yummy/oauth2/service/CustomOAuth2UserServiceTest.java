@@ -1,8 +1,7 @@
 package com.groom.yummy.oauth2.service;
 
-import com.groom.yummy.facade.UserFacade;
+import com.groom.yummy.user.facade.UserFacade;
 import com.groom.yummy.oauth2.auth.LoginUser;
-import com.groom.yummy.oauth2.dto.KakaoResponse;
 import com.groom.yummy.oauth2.dto.OAuth2Response;
 import com.groom.yummy.oauth2.strategy.OAuth2ResFactory;
 import com.groom.yummy.user.User;
@@ -29,7 +28,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomOAuth2UserServiceTest {

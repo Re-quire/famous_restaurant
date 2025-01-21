@@ -2,8 +2,8 @@ package com.groom.yummy.handler;
 
 import com.groom.yummy.domain.user.UserEntity;
 import com.groom.yummy.domain.user.UserJpaRepository;
-import com.groom.yummy.user.UserDeleteEvent;
-import com.groom.yummy.user.UserNicknameChangedEvent;
+import com.groom.yummy.user.event.UserDeleteEvent;
+import com.groom.yummy.user.event.UserNicknameChangedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,8 +2,8 @@ package com.groom.yummy.handler;
 
 import com.groom.yummy.domain.user.UserEntity;
 import com.groom.yummy.domain.user.UserJpaRepository;
-import com.groom.yummy.user.UserDeleteEvent;
-import com.groom.yummy.user.UserNicknameChangedEvent;
+import com.groom.yummy.user.event.UserDeleteEvent;
+import com.groom.yummy.user.event.UserNicknameChangedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -4,6 +4,8 @@ package com.groom.yummy.user;
 import com.groom.yummy.exception.CustomException;
 import com.groom.yummy.exception.UserErrorCode;
 import com.groom.yummy.publisher.EventPublisher;
+import com.groom.yummy.user.event.UserDeleteEvent;
+import com.groom.yummy.user.event.UserNicknameChangedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final EventPublisher eventPublisher;
+
     public User getUserInfo(Long userId) {
         return userRepository.findById(userId).orElseThrow(()-> new CustomException(UserErrorCode.USER_NOT_FOUND));
     }
