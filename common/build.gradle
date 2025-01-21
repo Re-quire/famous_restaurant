@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     annotationProcessor 'org.projectlombok:lombok'
 
     compileOnly 'org.springframework.boot:spring-boot-starter-web'

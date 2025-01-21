@@ -1,6 +1,7 @@
 package com.groom.yummy.exception;
 
 import com.groom.yummy.dto.ResponseDto;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -42,7 +44,6 @@ public class GlobalExceptionHandler {
         String errorMessage = "요청한 JSON 데이터를 읽을 수 없습니다: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDto.of(-1,errorMessage));
     }
-
     // 기타예외 발생 시 500반환
     @ExceptionHandler
     public ResponseEntity<ResponseDto> handleException(Exception ex) {

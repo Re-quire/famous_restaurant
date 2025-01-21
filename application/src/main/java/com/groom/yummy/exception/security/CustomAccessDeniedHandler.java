@@ -1,4 +1,4 @@
-package com.groom.yummy.exception;
+package com.groom.yummy.exception.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groom.yummy.dto.ResponseDto;
