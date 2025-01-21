@@ -3,7 +3,6 @@ package com.groom.yummy.domain.user;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
