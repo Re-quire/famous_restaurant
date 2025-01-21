@@ -8,6 +8,7 @@ version = 'unspecified'
 
 dependencies {
     implementation project(':domain')
+    compileOnly project(':common')
 
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

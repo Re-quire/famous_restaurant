@@ -1,4 +1,8 @@
 package com.groom.yummy.exception;
 
-public enum ErrorCode {
+import org.springframework.http.HttpStatusCode;
+
+public interface ErrorCode {
+    HttpStatusCode getCode();
+    String getMessage();
 }

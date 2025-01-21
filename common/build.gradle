@@ -7,6 +7,10 @@ plugins {
 dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
 }
 
 // 'bootJar' 태스크 비활성화

@@ -6,25 +6,24 @@ import com.groom.yummy.user.UserDeleteEvent;
 import com.groom.yummy.user.UserNicknameChangedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
-@Component
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class UserEventHandler {
     private final UserJpaRepository userJpaRepository;
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlerNicknameChange(UserNicknameChangedEvent event){
         UserEntity userEntity = userJpaRepository.findById(event.userId()).orElseThrow();
         userEntity.updateNickname(event.newNickname());
         log.info("userEntity nickname : {}", userEntity.getNickname());
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleUserDelete(UserDeleteEvent event) {
         UserEntity userEntity = userJpaRepository.findById(event.userId()).orElseThrow();
         userEntity.deleteUser(event.isDeleted());
