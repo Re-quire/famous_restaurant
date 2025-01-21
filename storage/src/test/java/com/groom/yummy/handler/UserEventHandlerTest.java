@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,6 @@ class UserEventHandlerTest {
 
     private UserEntity testUserEntity;
 
-
     @BeforeEach
     void setUp(){
         testUserEntity = UserEntity.builder()
@@ -44,6 +45,7 @@ class UserEventHandlerTest {
     }
 
     @Test
+    @DirtiesContext //테스트 실행 후에 Spring 애플리케이션 컨텍스트를 재생성, 트랜잭션 더러워져서 발생한 문제 일단 해결
     void handlerNicknameChaneTest(){
         // given
         Long userId = testUserEntity.getId();
@@ -63,7 +65,9 @@ class UserEventHandlerTest {
     }
 
     @Test
+    @DirtiesContext //테스트 실행 후에 Spring 애플리케이션 컨텍스트를 재생성, 트랜잭션 더러워져서 발생한 문제 일단 해결
     void handleUserDeleteTest(){
+
         // given
         Long userId = testUserEntity.getId();
         boolean isDeleted = true;
