@@ -7,6 +7,7 @@ import com.groom.yummy.group.dto.request.JoinGroupRequestDto;
 import com.groom.yummy.group.dto.response.GroupDetailResponseDto;
 import com.groom.yummy.group.dto.response.GroupResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "[Group] Group API")
 @RestController
 @RequestMapping("/api/v1/groups")
 @RequiredArgsConstructor
