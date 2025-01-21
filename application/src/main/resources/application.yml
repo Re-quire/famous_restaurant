@@ -13,6 +13,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
 
   security:
     oauth2:
@@ -92,46 +94,46 @@ server:
   port: 8080
   url: https://52.78.217.57.nip.io
 ---
-  spring:
-    config:
-      activate:
-        on-profile: test
-    datasource:
-      url: jdbc:h2:mem:testdb
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
-    h2:
-      console:
-        enabled: true
-    jpa:
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.H2Dialect
-          show_sql: true
-          format_sql: true
-          default_batch_fetch_size: 50
-    security:
-      oauth2:
-        client:
-          provider:
-            kakao:
-              authorization-uri: https://kauth.kakao.com/oauth/authorize
-              token-uri: https://kauth.kakao.com/oauth/token
-              user-info-uri: https://kapi.kakao.com/v2/user/me
-              user-name-attribute: id
-          registration:
-            kakao:
-              client-name: kakao
-              client-id: ${client-id}
-              client-secret: ${client-secret}
-              redirect-uri: ${redirect-uri}
-              client-authentication-method: client_secret_post
-              authorization-grant-type: authorization_code
-              scope: profile_nickname, account_email
-    jwt:
-      secret: qwdhui83jvnllw133qkjbcaw712jnfe982329H#p219qnf43yj90j32
-      valid-time: 7200000
-      cookie-name: Authorization
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 50
+  security:
+    oauth2:
+      client:
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+        registration:
+          kakao:
+            client-name: kakao
+            client-id: ${client-id}
+            client-secret: ${client-secret}
+            redirect-uri: ${redirect-uri}
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, account_email
+  jwt:
+    secret: qwdhui83jvnllw133qkjbcaw712jnfe982329H#p219qnf43yj90j32
+    valid-time: 7200000
+    cookie-name: Authorization
