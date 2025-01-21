@@ -4,11 +4,13 @@ import com.groom.yummy.domain.user.UserEntity;
 import com.groom.yummy.domain.user.UserJpaRepository;
 import com.groom.yummy.user.event.UserDeleteEvent;
 import com.groom.yummy.user.event.UserNicknameChangedEvent;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -26,6 +28,7 @@ class UserEventHandlerTest {
     private UserJpaRepository userJpaRepository;
 
     private UserEntity testUserEntity;
+
 
     @BeforeEach
     void setUp(){
@@ -49,6 +52,10 @@ class UserEventHandlerTest {
         // when
         eventPublisher.publishEvent(new UserNicknameChangedEvent(userId, newNickname));
 
+        // 해당 로직은 커밋 이전에 반영되모르 명시적으로 커밋을 설정한다.
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         // then
         Optional<UserEntity> updatedUser = userJpaRepository.findById(userId);
         assertTrue(updatedUser.isPresent());
@@ -64,10 +71,13 @@ class UserEventHandlerTest {
         // when
         eventPublisher.publishEvent(new UserDeleteEvent(userId, isDeleted));
 
+        // 해당 로직은 커밋 이전에 반영되모르 명시적으로 커밋을 설정한다.
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         // then
         Optional<UserEntity> deletedUser = userJpaRepository.findById(userId);
         assertTrue(deletedUser.isPresent());
         assertTrue(deletedUser.get().isDeleted());
     }
-
 }
