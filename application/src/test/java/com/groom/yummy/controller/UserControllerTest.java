@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Import({SecurityConfig.class})
 @WebMvcTest(controllers = {UserController.class})
-@ExtendWith(MockitoExtension.class) // Mockito 확장 사용
 class UserControllerTest {
 
     @Autowired
