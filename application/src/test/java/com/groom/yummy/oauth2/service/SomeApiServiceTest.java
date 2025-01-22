@@ -1,5 +1,6 @@
 package com.groom.yummy.oauth2.service;
 
+import com.groom.yummy.store.Store;
 import com.groom.yummy.store.StoreService;
 import com.groom.yummy.webclient.SomeApiService;
 import okhttp3.mockwebserver.MockResponse;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -36,6 +40,7 @@ class SomeApiServiceTest {
 
     private static MockWebServer mockWebServer;
 
+
     @BeforeAll
     static void setUpServer() throws Exception {
         mockWebServer = new MockWebServer();
@@ -52,26 +57,26 @@ class SomeApiServiceTest {
     void 특정지역_식당정보_저장테스트() throws Exception {
         // GIVEN
         String mockResponseBody = """
-        {
-            "data": {
-                "stores": [
-                    {
-                        "storeId": 1,
-                        "name": "맛집가게",
-                        "regionId": 2,
-                        "category": "001"
-                    },
-                    {
-                        "storeId": 2,
-                        "name": "맛집가게2",
-                        "regionId": 2,
-                        "category": "002"
-                    }
-                ]
-            },
-            "message": "가게 목록이 성공적으로 조회되었습니다."
-        }
-        """;
+    {
+        "data": {
+            "stores": [
+                {
+                    "storeId": 1,
+                    "name": "맛집가게",
+                    "regionId": 2,
+                    "category": "001"
+                },
+                {
+                    "storeId": 2,
+                    "name": "맛집가게2",
+                    "regionId": 2,
+                    "category": "002"
+                }
+            ]
+        },
+        "message": "가게 목록이 성공적으로 조회되었습니다."
+    }
+    """;
 
         mockWebServer.enqueue(new MockResponse()
                 .setBody(mockResponseBody)
@@ -79,23 +84,38 @@ class SomeApiServiceTest {
 
         // WHEN
         String regionCode = "1111000000";
-        someApiService.getSomeData(regionCode);
+        someApiService.fetchStoresFromApi(regionCode);
 
         // THEN
-        verify(storeService, times(2)).createStore(any());
+        ArgumentCaptor<Store> storeCaptor = ArgumentCaptor.forClass(Store.class);
+        verify(storeService, times(2)).createStore(storeCaptor.capture());
+
+        List<Store> capturedStores = storeCaptor.getAllValues();
+
+        // 첫 번째 Store 검증
+        Store store1 = capturedStores.get(0);
+        assertEquals("맛집가게", store1.getName());
+        assertEquals("001", store1.getCategory().getApiCode());
+        assertEquals(2L, store1.getRegionId());
+
+        // 두 번째 Store 검증
+        Store store2 = capturedStores.get(1);
+        assertEquals("맛집가게2", store2.getName());
+        assertEquals("002", store2.getCategory().getApiCode());
+        assertEquals(2L, store2.getRegionId());
 
         // Mock 서버 요청 검증
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
-        assertEquals("/api/v1/regions?regionCode=1111000000", recordedRequest.getPath());
+        assertEquals("/api/v1/stores?regionCode=1111000000", recordedRequest.getPath());
         assertEquals("GET", recordedRequest.getMethod());
     }
 
     @Configuration
     static class TestConfig {
         @Bean
-        public SomeApiService someApiService() {
+        public SomeApiService someApiService(StoreService storeService) {
             String baseUrl = mockWebServer.url("/").toString();
-            return new SomeApiService(WebClient.builder().baseUrl(baseUrl), storeService());
+            return new SomeApiService(WebClient.builder().baseUrl(baseUrl), storeService);
         }
 
         @Bean
@@ -103,4 +123,5 @@ class SomeApiServiceTest {
             return mock(StoreService.class);
         }
     }
+
 }
