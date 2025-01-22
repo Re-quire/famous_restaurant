@@ -14,11 +14,11 @@ dependencies {
 }
 
 // 'bootJar' 태스크 비활성화
-tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
+bootJar {
     enabled = false
 }
 
 // JAR 태스크 활성화
-tasks.named('jar') {
-    enabled = true
-}
+//jar {
+//    enabled = false
+//}

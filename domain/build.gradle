@@ -40,6 +40,10 @@ test {
     useJUnitPlatform()
 }
 
-tasks.named('bootJar') {
+bootJar {
     enabled = false
 }
+
+//jar {
+//    enabled = false
+//}
