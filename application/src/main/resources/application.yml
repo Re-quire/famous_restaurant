@@ -37,7 +37,7 @@ spring:
 
   jwt:
     secret: qwdhui83jvnllw133qkjbcaw712jnfe982329H#p219qnf43yj90j32
-    valid-time: 720000
+    valid-time: 120000
     cookie-name: Authorization
 
 server:
