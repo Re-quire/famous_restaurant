@@ -2,6 +2,8 @@ package com.groom.yummy.group;
 
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
+import com.groom.yummy.usertogroup.AttendanceStatus;
+import com.groom.yummy.usertogroup.UserToGroupRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +31,9 @@ public class GroupServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserToGroupRepository userToGroupRepository;
 
     @DisplayName("사용자는 소모임을 생성할 수 있다.")
     @Order(1)
@@ -132,8 +137,10 @@ public class GroupServiceTest {
 
         // Then
         verify(groupRepository, times(1)).updateGroupParticipants(eq(groupId), eq(3));
-        verify(userRepository, times(1)).findByEmail(userEmail);
+        verify(userToGroupRepository, times(1))
+                .save(eq(group), eq(user), eq(false), eq(AttendanceStatus.APPROVED)); // save 호출 검증
     }
+
 
     @DisplayName("소모임 참여 시 참가 인원이 초과되면 예외가 발생한다.")
     @Order(4)
