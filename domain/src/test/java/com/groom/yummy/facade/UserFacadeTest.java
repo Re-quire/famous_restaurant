@@ -1,11 +1,10 @@
 package com.groom.yummy.facade;
 
-import com.groom.yummy.publisher.EventPublisher;
-import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
-import com.groom.yummy.user.dto.response.UserInfoResDto;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserAuthService;
 import com.groom.yummy.user.UserService;
+import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
+import com.groom.yummy.user.dto.response.UserInfoResDto;
 import com.groom.yummy.user.facade.UserFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class UserFacadeTest {
     private UserService userService;
 
     @Test
-    @DisplayName("완벽한 테스트")
+    @DisplayName("유저 서비스에서 조회한 유저를 dto로 변환하여 리턴합니다.")
     void getUserInfoTest() {
         // given
         Long userId = 1L;
@@ -49,7 +48,7 @@ class UserFacadeTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("email로 조회한 User를 리턴합니다.")
     void findAuthUserByEmailTest() {
         // given
         Long userId = 1L;
@@ -68,7 +67,7 @@ class UserFacadeTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("유저 회원가입 결과를 받아 리턴합니다.")
     void findOrCreateUserTest() {
         // given
         Long userId = 1L;
@@ -88,11 +87,10 @@ class UserFacadeTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("유저 업데이트한 결과를 dto로 변환하여 리턴합니다.")
     void updateUserNicknameTest() {
         // Arrange
         Long userId = 1L;
-        String oldNickname = "강형준";
         String email = "email@gmail.com";
         String newNickname = "업데이트강형준";
         UpdateNicknameReqDto updateNicknameReqDto = new UpdateNicknameReqDto(newNickname);
@@ -108,8 +106,8 @@ class UserFacadeTest {
     }
 
     @Test
-    @DisplayName("")
-    void deleteUser_shouldReturnDeletedUserId() {
+    @DisplayName("유저 삭제(논리) 후 삭제한 userID를 리턴합니다.")
+    void deleteUserTest() {
         // given
         Long userId = 1L;
         when(userService.deleteUser(userId)).thenReturn(userId);
