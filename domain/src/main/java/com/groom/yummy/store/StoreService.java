@@ -1,6 +1,7 @@
 package com.groom.yummy.store;
 
 import com.groom.yummy.region.RegionService;
+import com.groom.yummy.store.dto.StoreApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,24 @@ public class StoreService {
         }
 
         return storeRepository.saveStore(store, store.getRegionId());
+    }
+
+    public void saveStores(List<StoreApiResponseDto> storeDtos) {
+        List<Store> stores = storeDtos.stream()
+                .map(dto -> Store.builder()
+                        .storeId(dto.getStoreId())
+                        .name(dto.getName())
+                        .category(Category.fromApiCode(dto.getCategory()))
+                        .regionId(dto.getRegionId())
+                        .build())
+                .toList();
+
+        for (Store store : stores) {
+            boolean exists = storeRepository.existsByNameAndRegionId(store.getName(), store.getRegionId());
+            if (!exists) {
+                storeRepository.saveStore(store, store.getRegionId());
+            }
+        }
     }
 
     public Optional<Store> findStoreById(Long storeId) {
