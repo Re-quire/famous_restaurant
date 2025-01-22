@@ -1,5 +1,6 @@
 package com.groom.yummy.user;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ class UserAuthServiceTest {
     private UserRepository userRepository;
 
     @Test
+    @DisplayName("회원가입이 된 유저인지 확인하기 위해 email로 유저를 조회합니다.")
     void findAuthUserByEmailTest() {
         // given
         String nickname = "강형준";
@@ -42,6 +44,21 @@ class UserAuthServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 하지 않은 유저를 조회합니다.")
+    void findAuthUserByEmailTest_Empty() {
+        // given
+        String email = "email@gmail.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // when
+        Optional<User> result = userAuthService.findAuthUserByEmail(email);
+
+        // then
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("유저가 없는 경우(Optional.empty()) 회원가입을 진행합니다.")
     void findOrCreateUser_Create_Test() {
         // given
         Long userId = 1L;
@@ -65,6 +82,7 @@ class UserAuthServiceTest {
     }
 
     @Test
+    @DisplayName("유저가 있는 경우 해당 유저를 리턴합니다.")
     void findOrCreateUser_Find_Test() {
         // given
         String nickname = "강형준";

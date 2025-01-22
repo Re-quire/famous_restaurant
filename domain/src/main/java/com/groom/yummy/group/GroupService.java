@@ -1,5 +1,9 @@
 package com.groom.yummy.group;
 
+import com.groom.yummy.exception.CustomException;
+import com.groom.yummy.exception.GroupErrorCode;
+import com.groom.yummy.exception.StoreErrorCode;
+import com.groom.yummy.exception.UserErrorCode;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
 import com.groom.yummy.usertogroup.AttendanceStatus;
@@ -20,11 +24,11 @@ public class GroupService {
 
     public Long createGroup(Group group, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         Long storeId = group.getStoreId();
         if (storeId == null) {
-            throw new IllegalArgumentException("Store ID는 null일 수 없습니다.");
+            throw new CustomException(StoreErrorCode.STORE_NOT_FOUND);
         }
         return groupRepository.saveGroup(group, storeId);
     }
@@ -39,13 +43,13 @@ public class GroupService {
 
     public void joinGroup(Long groupId, Long userId, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         Group group = groupRepository.findGroupById(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("소모임을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(GroupErrorCode.GROUP_NOT_FOUND));
 
         if (group.getCurrentParticipants() >= group.getMaxParticipants()) {
-            throw new IllegalStateException("참가 인원이 가득 찼습니다.");
+            throw new CustomException(GroupErrorCode.GROUP_PARTICIPATION_FULL);
         }
         groupRepository.updateGroupParticipants(groupId, group.getCurrentParticipants() + 1);
 

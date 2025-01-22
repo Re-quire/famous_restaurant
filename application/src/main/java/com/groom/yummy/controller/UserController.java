@@ -7,6 +7,7 @@ import com.groom.yummy.user.facade.UserFacade;
 import com.groom.yummy.oauth2.auth.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class UserController {
 
     @Operation(summary = "유저 닉네임 변경", description = "토큰 정보 기반 유저 닉네임을 변경합니다.")
     @PatchMapping("/profile")
-    public ResponseEntity<ResponseDto<UserInfoResDto>> updateUserNickname(@RequestBody UpdateNicknameReqDto updateNicknameReqDto,
+    public ResponseEntity<ResponseDto<UserInfoResDto>> updateUserNickname(@Valid @RequestBody UpdateNicknameReqDto updateNicknameReqDto,
                                                                           @AuthenticationPrincipal LoginUser loginUser){
         Long userId = loginUser.getUserId();
         UserInfoResDto userInfoResDto = userFacade.updateUserNickname(userId,updateNicknameReqDto);
