@@ -5,6 +5,7 @@ import com.groom.yummy.user.UserAuthService;
 import com.groom.yummy.user.UserService;
 import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
 import com.groom.yummy.user.dto.response.UserInfoResDto;
+
 import com.groom.yummy.user.facade.UserFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ class UserFacadeTest {
 
     @Test
     @DisplayName("유저 서비스에서 조회한 유저를 dto로 변환하여 리턴합니다.")
+
     void getUserInfoTest() {
         // given
         Long userId = 1L;
@@ -49,6 +51,7 @@ class UserFacadeTest {
 
     @Test
     @DisplayName("email로 조회한 User를 리턴합니다.")
+
     void findAuthUserByEmailTest() {
         // given
         Long userId = 1L;
@@ -68,6 +71,7 @@ class UserFacadeTest {
 
     @Test
     @DisplayName("유저 회원가입 결과를 받아 리턴합니다.")
+
     void findOrCreateUserTest() {
         // given
         Long userId = 1L;
@@ -88,6 +92,7 @@ class UserFacadeTest {
 
     @Test
     @DisplayName("유저 업데이트한 결과를 dto로 변환하여 리턴합니다.")
+
     void updateUserNicknameTest() {
         // Arrange
         Long userId = 1L;
@@ -108,6 +113,7 @@ class UserFacadeTest {
     @Test
     @DisplayName("유저 삭제(논리) 후 삭제한 userID를 리턴합니다.")
     void deleteUserTest() {
+
         // given
         Long userId = 1L;
         when(userService.deleteUser(userId)).thenReturn(userId);

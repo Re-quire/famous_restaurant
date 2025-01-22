@@ -1,5 +1,6 @@
 package com.groom.yummy.group;
 
+import com.groom.yummy.exception.CustomException;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
 import org.junit.jupiter.api.*;
@@ -168,7 +169,7 @@ public class GroupServiceTest {
         when(groupRepository.findGroupById(groupId)).thenReturn(Optional.of(group));
 
         // When
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        CustomException exception = assertThrows(CustomException.class,
                 () -> groupService.joinGroup(groupId, userId, userEmail));
 
         // Then

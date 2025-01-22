@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groom.yummy.config.SecurityConfig;
 import com.groom.yummy.exception.CustomException;
 import com.groom.yummy.exception.JwtErrorCode;
+
 import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
 import com.groom.yummy.user.dto.response.UserInfoResDto;
 import com.groom.yummy.user.facade.UserFacade;

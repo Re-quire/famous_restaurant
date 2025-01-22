@@ -1,5 +1,6 @@
 package com.groom.yummy.reply;
 
+import com.groom.yummy.exception.CustomException;
 import com.groom.yummy.publisher.EventPublisher;
 import com.groom.yummy.reply.event.ReplyUpdatedEvent;
 import com.groom.yummy.user.User;
@@ -74,11 +75,11 @@ class ReplyServiceTest {
 		when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
 		// When & Then
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+		CustomException exception = assertThrows(CustomException.class, () -> {
 			replyService.createReply(reply);
 		});
 
-		assertEquals("존재하지 않는 사용자입니다. ID: 1", exception.getMessage());
+		assertEquals("유저가 존재하지 않습니다.", exception.getMessage());
 		verify(replyRepository, never()).save(any());
 	}
 
@@ -108,11 +109,11 @@ class ReplyServiceTest {
 		when(replyRepository.findById(1L)).thenReturn(Optional.empty());
 
 		// When & Then
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+		CustomException exception = assertThrows(CustomException.class, () -> {
 			replyService.updateReply(1L, "수정된 댓글 내용");
 		});
 
-		assertEquals("존재하지 않는 댓글입니다. ID: 1", exception.getMessage());
+		assertEquals("댓글이 존재하지 않습니다.", exception.getMessage());
 		verify(eventPublisher, never()).publish(any());
 	}
 
@@ -161,11 +162,11 @@ class ReplyServiceTest {
 		when(replyRepository.findById(1L)).thenReturn(Optional.empty());
 
 		// When & Then
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+		CustomException exception = assertThrows(CustomException.class, () -> {
 			replyService.deleteReply(1L);
 		});
 
-		assertEquals("존재하지 않는 댓글입니다. ID: 1", exception.getMessage());
+		assertEquals("댓글이 존재하지 않습니다.", exception.getMessage());
 		verify(replyRepository, never()).deleteById(any());
 	}
 }
