@@ -39,18 +39,18 @@ subprojects {
             xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/${project.name}-jacoco.xml"))
         }
         classDirectories.setFrom(
-                files(
-                        classDirectories.asFileTree.matching {
-                            exclude(
-                                    "**/dto/**",         // DTO 제외
-                                    "**/config/**",      // Config 제외
-                                    "**/exception/**",   // Exception 제외
-                                    "**/*Application*",  // Main Application 제외
-                                    "**/event/**",       // Event 제외
-                                    "**/response/**"     // Response 관련 클래스 제외
-                            )
-                        }
-                )
+                fileTree(dir: layout.buildDirectory.dir("classes/java/main")).matching {
+                    exclude(
+                            "**/dto/**",         // DTO 제외
+                            "**/config/**",      // Config 제외
+                            "**/exception/**",   // Exception 제외
+                            "**/*Application*",  // Main Application 제외
+                            "**/event/**",       // Event 제외
+                            "**/response/**",    // Response 관련 클래스 제외
+                            "com/groom/yummy/domain/group/**",  // group 도메인 제외
+                            "com/groom/yummy/domain/reply/**"   // reply 도메인 제외
+                    )
+                }
         )
     }
 }
@@ -66,7 +66,19 @@ task jacocoRootReport(type: JacocoReport) {
 
     additionalSourceDirs.from files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories.from files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories.from files(subprojects.sourceSets.main.output)
+    classDirectories.setFrom(
+            files(
+                    subprojects.collect { subproject ->
+                        fileTree(dir: "${subproject.buildDir}/classes/java/main").matching {
+                            exclude(
+                                    "${subproject.name}/com/groom/yummy/domain/group/**",  // group 도메인 제외
+                                    "${subproject.name}/com/groom/yummy/domain/reply/**"  // reply 도메인 제외
+                            )
+                        }
+                    }
+            )
+    )
     executionData.from files(subprojects.jacocoTestReport.executionData)
 }
+
 
