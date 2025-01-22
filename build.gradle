@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.1'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.4.1' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
     id 'jacoco'
 }
 
@@ -12,6 +12,7 @@ tasks.named('test') {
 
 allprojects {
     group = 'com.groom.yummy'
+    version = '1.0.0' // 공통 버전 설정
     repositories {
         mavenCentral()
     }
@@ -23,8 +24,8 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: "java"
-    apply plugin: "jacoco"
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     tasks.withType(Test).configureEach {
         useJUnitPlatform()
@@ -41,37 +42,31 @@ subprojects {
                 files(
                         classDirectories.asFileTree.matching {
                             exclude(
-                                    // 제외할 패턴을 추가
-                                    // "**/*Application*",
-                                    // "**/*Config*",
-                                    // "**/*Dto*",
-                                    // "**/*Request*",
-                                    // "**/*Response*",
-                                    // "**/*Interceptor*",
-                                    // "**/*Exception*"
+                                    "**/dto/**",         // DTO 제외
+                                    "**/config/**",      // Config 제외
+                                    "**/exception/**",   // Exception 제외
+                                    "**/*Application*",  // Main Application 제외
+                                    "**/event/**",       // Event 제외
+                                    "**/response/**"     // Response 관련 클래스 제외
                             )
                         }
                 )
         )
     }
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.1"
-        }
-    }
-
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = false
-    }
 }
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn subprojects.test
+
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation = file("${buildDir}/reports/jacoco/html")
+    }
+
+    additionalSourceDirs.from files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from files(subprojects.sourceSets.main.output)
+    executionData.from files(subprojects.jacocoTestReport.executionData)
+}
+
