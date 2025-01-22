@@ -2,6 +2,10 @@ package com.groom.yummy.reply;
 
 import java.util.Optional;
 
+import com.groom.yummy.exception.CustomException;
+import com.groom.yummy.exception.GroupErrorCode;
+import com.groom.yummy.exception.ReplyErrorCode;
+import com.groom.yummy.exception.UserErrorCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +33,7 @@ public class ReplyService {
 		validateGroup(reply.getGroupId());
 
 		Reply savedReply = replyRepository.save(reply)
-			.orElseThrow(() -> new IllegalArgumentException("댓글 저장 실패: " + reply));
+			.orElseThrow(() -> new CustomException(ReplyErrorCode.REPLY_NOT_FOUND));
 
 		return savedReply;
 	}
@@ -62,18 +66,18 @@ public class ReplyService {
 	// 댓글 검증
 	private Reply validateReply(Long id) {
 		return replyRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. ID: " + id));
+			.orElseThrow(() -> new CustomException(ReplyErrorCode.REPLY_NOT_FOUND));
 	}
 
 	// 사용자 검증
 	private void validateUser(Long userId) {
 		userRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. ID: " + userId));
+			.orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 	}
 
 	// 그룹 검증
 	private void validateGroup(Long groupId) {
 		groupRepository.findGroupById(groupId)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 소모임입니다. ID: " + groupId));
+			.orElseThrow(() -> new CustomException(GroupErrorCode.GROUP_NOT_FOUND));
 	}
 }
