@@ -52,4 +52,14 @@ public enum Category {
     public static boolean isValidCategory(Category category) {
         return API_CODE_TO_CATEGORY.containsValue(category);
     }
+
+    public static Category fromDescription(String description) {
+        for (Category category : Category.values()) {
+            if (category.getDescription().equals(description)) {
+                return category;
+            }
+        }
+        throw new IllegalArgumentException("잘못된 카테고리: " + description);
+    }
+
 }
