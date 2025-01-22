@@ -1,12 +1,12 @@
 package com.groom.yummy.controller;
 
 import com.groom.yummy.dto.ResponseDto;
+import com.groom.yummy.external.Category;
 import com.groom.yummy.external.StoreApiClient;
 import com.groom.yummy.external.dto.ApiResponse;
 import com.groom.yummy.external.dto.StoreListResponse;
-import com.groom.yummy.external.dto.StoreRequestDto;
 import com.groom.yummy.external.dto.StoreResponseDto;
-import com.groom.yummy.store.Category;
+import com.groom.yummy.store.Category_;
 import com.groom.yummy.store.StoreService;
 import com.groom.yummy.store.dto.StoreApiResponseDto;
 import com.groom.yummy.webclient.SomeApiService;
@@ -36,7 +36,7 @@ public class StoreController {
             // 각 StoreApiResponseDto의 category를 내부 Category enum으로 변환
             storeDtos.forEach(dto -> {
                 String description = dto.getCategory();
-                String apiCode = Category.fromDescription(description).getApiCode();
+                String apiCode = Category_.fromDescription(description).getApiCode();
                 dto.setCategory(apiCode); // description -> apiCode로 변환
             });
 

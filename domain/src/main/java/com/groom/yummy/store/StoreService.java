@@ -26,7 +26,7 @@ public class StoreService {
                     throw new IllegalArgumentException("이미 등록되어있는 가게 정보 입니다.");
                 });
 
-        if (store.getCategory() == null || !Category.isValidCategory(store.getCategory())) {
+        if (store.getCategory() == null || !Category_.isValidCategory(store.getCategory())) {
             throw new IllegalArgumentException("등록되지 않은 카테고리 입니다.");
         }
 
@@ -38,7 +38,7 @@ public class StoreService {
                 .map(dto -> Store.builder()
                         .storeId(dto.getStoreId())
                         .name(dto.getName())
-                        .category(Category.fromApiCode(dto.getCategory()))
+                        .category(Category_.fromApiCode(dto.getCategory()))
                         .regionId(dto.getRegionId())
                         .build())
                 .toList();
