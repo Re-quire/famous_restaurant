@@ -3,21 +3,26 @@ package com.groom.yummy.domain.usertogroup;
 import com.groom.yummy.domain.BaseEntity;
 import com.groom.yummy.domain.group.GroupEntity;
 import com.groom.yummy.domain.user.UserEntity;
+import com.groom.yummy.usertogroup.AttendanceStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_groups")
 @SuperBuilder
+@Getter
 public class UserToGroupEntity extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private boolean isLeader;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AttendanceStatus attendanceStatus;
@@ -37,4 +42,14 @@ public class UserToGroupEntity extends BaseEntity {
         this.user = user;
         this.group = group;
     }
+
+    public static UserToGroupEntity create(GroupEntity groupEntity, UserEntity userEntity, boolean isLeader) {
+        return UserToGroupEntity.builder()
+                .group(groupEntity)
+                .user(userEntity)
+                .isLeader(isLeader)
+                .attendanceStatus(AttendanceStatus.APPROVED)
+                .build();
+    }
+
 }
