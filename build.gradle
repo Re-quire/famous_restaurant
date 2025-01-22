@@ -1,37 +1,79 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 allprojects {
-	group = 'com.groom.yummy'
-	repositories {
-		mavenCentral()
-	}
-	java {
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(17)
-		}
-	}
+    group = 'com.groom.yummy'
+    repositories {
+        mavenCentral()
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+subprojects {
+    apply plugin: "java"
+    apply plugin: "jacoco"
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.1"
-	}
-}
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        finalizedBy tasks.named("${project.name}JacocoTestReport")
+    }
 
-bootJar {
-	enabled = false
-}
+    tasks.register("${project.name}JacocoTestReport", JacocoReport) {
+        dependsOn tasks.named("test")
+        reports {
+            xml.required.set(true) // xml 설정
+            xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/${project.name}-jacoco.xml"))
+        }
+        classDirectories.setFrom(
+                files(
+                        classDirectories.files.map {
+                            fileTree(it) {
+                                exclude(
+                                        // 테스트 커버리지 측정 제외 목록 추가
+                                        // "**/*Application*",
+                                        // "**/*Config*",
+                                        // "**/*Dto*",
+                                        // "**/*Request*",
+                                        // "**/*Response*",
+                                        // "**/*Interceptor*",
+                                        // "**/*Exception*"
+                                )
+                            }
+                        }
+                )
+        )
+    }
 
-jar {
-	enabled = false
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.1"
+        }
+    }
+
+    bootJar {
+        enabled = false
+    }
+
+    jar {
+        enabled = false
+    }
 }
