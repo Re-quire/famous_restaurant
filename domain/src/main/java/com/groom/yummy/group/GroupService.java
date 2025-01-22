@@ -6,6 +6,8 @@ import com.groom.yummy.exception.StoreErrorCode;
 import com.groom.yummy.exception.UserErrorCode;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
+import com.groom.yummy.usertogroup.AttendanceStatus;
+import com.groom.yummy.usertogroup.UserToGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final UserToGroupRepository userToGroupRepository;
 
     public Long createGroup(Group group, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
@@ -49,6 +52,8 @@ public class GroupService {
             throw new CustomException(GroupErrorCode.GROUP_PARTICIPATION_FULL);
         }
         groupRepository.updateGroupParticipants(groupId, group.getCurrentParticipants() + 1);
+
+        userToGroupRepository.save(group, user, false, AttendanceStatus.APPROVED);
     }
 
 }

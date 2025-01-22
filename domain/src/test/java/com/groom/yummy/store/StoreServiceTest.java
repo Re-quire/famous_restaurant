@@ -37,7 +37,7 @@ public class StoreServiceTest {
         // Given
         Store store = Store.builder()
                 .name("GoormStore")
-                .category(Category.Dessert)
+                .category(Category.PIZZA)
                 .regionId(1L)
                 .build();
 
@@ -66,7 +66,7 @@ public class StoreServiceTest {
         // GIVEN
         Store store = Store.builder()
                 .name("GoormStore")
-                .category(Category.Dessert)
+                .category(Category.PIZZA)
                 .regionId(1L)
                 .build();
 
