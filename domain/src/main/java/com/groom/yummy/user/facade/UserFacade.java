@@ -1,7 +1,7 @@
-package com.groom.yummy.facade;
+package com.groom.yummy.user.facade;
 
-import com.groom.yummy.dto.request.UpdateNicknameReqDto;
-import com.groom.yummy.dto.response.UserInfoResDto;
+import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
+import com.groom.yummy.user.dto.response.UserInfoResDto;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserAuthService;
 import com.groom.yummy.user.UserService;

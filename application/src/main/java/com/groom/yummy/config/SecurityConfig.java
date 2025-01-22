@@ -1,8 +1,8 @@
 package com.groom.yummy.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groom.yummy.exception.CustomAccessDeniedHandler;
-import com.groom.yummy.exception.CustomAuthenticationEntryPoint;
+import com.groom.yummy.exception.security.CustomAccessDeniedHandler;
+import com.groom.yummy.exception.security.CustomAuthenticationEntryPoint;
 import com.groom.yummy.filter.JwtAuthFilter;
 import com.groom.yummy.oauth2.handler.CustomSuccessHandler;
 import com.groom.yummy.oauth2.service.CustomOAuth2UserService;
@@ -19,8 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -65,7 +63,7 @@ public class SecurityConfig {
                         .userService(customOAuth2UserService)).successHandler(customSuccessHandler));
 
         // JWTFilter 추가
-        http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthFilter(jwtUtil,objectMapper), UsernamePasswordAuthenticationFilter.class);
 
         // Exception handler 추가
         http.exceptionHandling(exceptionHandling ->

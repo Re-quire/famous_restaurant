@@ -1,8 +1,14 @@
 package com.groom.yummy.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groom.yummy.dto.ResponseDto;
+import com.groom.yummy.exception.CustomException;
+import com.groom.yummy.exception.ErrorCode;
+import com.groom.yummy.exception.JwtErrorCode;
 import com.groom.yummy.oauth2.auth.LoginUser;
 import com.groom.yummy.user.User;
 import com.groom.yummy.jwt.JwtProvider;
+import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -18,25 +24,40 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.groom.yummy.exception.JwtErrorCode.*;
+
 @Log4j2
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = findToken(request);
+        try{
+            String token = findToken(request);
+            if (!verifyToken(request, token)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-        if (!verifyToken(request, token)) {
+            User user = getUser(token);
+            setSecuritySession(user);
             filterChain.doFilter(request, response);
-            return;
-        }
 
-        User user = getUser(token);
-        setSecuritySession(user);
-        filterChain.doFilter(request, response);
+        }catch (CustomException e){
+            JwtErrorCode jwtErrorCode = (JwtErrorCode) e.getErrorCode();
+            switch (jwtErrorCode) {
+                case WRONG_TYPE_TOKEN, UNSUPPORTED_TOKEN, EXPIRED_TOKEN, UNKNOWN_TOKEN_ERROR ->
+                        setResponse(response, jwtErrorCode);
+                default -> {
+                    log.error("알 수 없는 에러 코드: {}", jwtErrorCode);
+                    setResponse(response, UNKNOWN_TOKEN_ERROR); // 기본 예외 처리
+                }
+            }
+        }
     }
 
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
@@ -90,5 +111,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
         return token;
+    }
+    private void setResponse(HttpServletResponse response, JwtErrorCode jwtErrorCode) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(jwtErrorCode.getCode().value());
+        response.getWriter().print(objectMapper.writeValueAsString(ResponseDto.of(-1,jwtErrorCode.getMessage())));
     }
 }

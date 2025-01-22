@@ -1,9 +1,9 @@
 package com.groom.yummy.controller;
 
 import com.groom.yummy.dto.ResponseDto;
-import com.groom.yummy.dto.request.UpdateNicknameReqDto;
-import com.groom.yummy.dto.response.UserInfoResDto;
-import com.groom.yummy.facade.UserFacade;
+import com.groom.yummy.user.dto.request.UpdateNicknameReqDto;
+import com.groom.yummy.user.dto.response.UserInfoResDto;
+import com.groom.yummy.user.facade.UserFacade;
 import com.groom.yummy.oauth2.auth.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

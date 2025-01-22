@@ -1,4 +1,4 @@
-package com.groom.yummy.dto.response;
+package com.groom.yummy.user.dto.response;
 
 import com.groom.yummy.user.User;
 import lombok.Builder;
