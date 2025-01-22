@@ -1,4 +1,4 @@
-package com.groom.yummy.domain.usertogroup;
+package com.groom.yummy.usertogroup;
 
 public enum AttendanceStatus {
     ATTENDED("참석"),
