@@ -34,24 +34,22 @@ subprojects {
     tasks.register("${project.name}JacocoTestReport", JacocoReport) {
         dependsOn tasks.named("test")
         reports {
-            xml.required.set(true) // xml 설정
+            xml.required.set(true)
             xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/${project.name}-jacoco.xml"))
         }
         classDirectories.setFrom(
                 files(
-                        classDirectories.files.map {
-                            fileTree(it) {
-                                exclude(
-                                        // 테스트 커버리지 측정 제외 목록 추가
-                                        // "**/*Application*",
-                                        // "**/*Config*",
-                                        // "**/*Dto*",
-                                        // "**/*Request*",
-                                        // "**/*Response*",
-                                        // "**/*Interceptor*",
-                                        // "**/*Exception*"
-                                )
-                            }
+                        classDirectories.asFileTree.matching {
+                            exclude(
+                                    // 제외할 패턴을 추가
+                                    // "**/*Application*",
+                                    // "**/*Config*",
+                                    // "**/*Dto*",
+                                    // "**/*Request*",
+                                    // "**/*Response*",
+                                    // "**/*Interceptor*",
+                                    // "**/*Exception*"
+                            )
                         }
                 )
         )
