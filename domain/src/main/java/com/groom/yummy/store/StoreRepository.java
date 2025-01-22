@@ -7,4 +7,6 @@ public interface StoreRepository {
     Optional<Store> findStoreById(Long id);
     Long saveStore(Store store, Long regionId);
     List<Store> findAllStores();
+    boolean existsByNameAndRegionId(String name, Long regionId);
+
 }

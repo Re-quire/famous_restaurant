@@ -38,4 +38,9 @@ public class StoreEntityRepository implements StoreRepository {
                 .map(StoreEntity::toStoreDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existsByNameAndRegionId(String name, Long regionId) {
+        return storeJpaRepository.existsByNameAndRegion_Id(name, regionId);
+    }
 }
