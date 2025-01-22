@@ -42,6 +42,7 @@ public class StoreController {
                     .body(new ResponseDto<>(null, "가게 데이터 동기화 중 오류 발생"));
         }
     }
+
 }
 
 
