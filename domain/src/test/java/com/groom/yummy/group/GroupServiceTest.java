@@ -64,7 +64,7 @@ public class GroupServiceTest {
 
         when(userRepository.findById(userId))
                 .thenReturn(Optional.of(user));
-        when(groupRepository.saveGroup(any(Group.class), eq(storeId)))
+        when(groupRepository.saveGroup(any(Group.class)))
                 .thenReturn(1L);
 
         // When
@@ -73,9 +73,9 @@ public class GroupServiceTest {
         // Then
         assertEquals(1L, groupId);
         verify(groupRepository, times(1))
-                .saveGroup(any(Group.class), eq(storeId));
+                .saveGroup(any(Group.class));
         verify(userToGroupRepository, times(1))
-                .saveUserToGroup(any(Group.class), eq(user), isNull(), eq(true), eq(AttendanceStatus.APPROVED));
+                .saveUserToGroup(any(Long.class), any(Long.class),  eq(true), eq(AttendanceStatus.APPROVED));
     }
 
 
@@ -141,7 +141,7 @@ public class GroupServiceTest {
 
         // Mock UserToGroupRepository 동작 설정
         doNothing().when(userToGroupRepository)
-                .saveUserToGroup(eq(group), eq(user), eq(store), eq(false), eq(AttendanceStatus.APPROVED));
+                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
 
         // When
         groupService.joinGroup(groupId, userId, storeId);
@@ -149,7 +149,7 @@ public class GroupServiceTest {
         // Then
         verify(groupRepository, times(1)).updateGroupParticipants(eq(groupId), eq(3));
         verify(userToGroupRepository, times(1))
-                .saveUserToGroup(eq(group), eq(user), eq(store), eq(false), eq(AttendanceStatus.APPROVED));
+                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
     }
 
     @DisplayName("Group join fails when participant limit exceeded.")

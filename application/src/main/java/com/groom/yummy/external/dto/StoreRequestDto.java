@@ -1,7 +1,9 @@
 package com.groom.yummy.external.dto;
 
-import com.groom.yummy.store.Category;
+
 import lombok.Builder;
+import com.groom.yummy.external.Category;
+
 
 @Builder
 public record StoreRequestDto(

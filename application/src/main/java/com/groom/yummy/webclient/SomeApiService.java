@@ -1,9 +1,8 @@
 package com.groom.yummy.webclient;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groom.yummy.store.Category;
+import com.groom.yummy.store.Category_;
 import com.groom.yummy.store.Store;
 import com.groom.yummy.store.StoreService;
 import com.groom.yummy.store.dto.StoreApiResponseDto;
@@ -41,7 +40,7 @@ public class SomeApiService {
                 Store store = Store.builder()
                         .storeId(dto.getStoreId())
                         .name(dto.getName())
-                        .category(Category.fromApiCode(dto.getCategory()))
+                        .category(Category_.fromApiCode(dto.getCategory()))
                         .regionId(dto.getRegionId())
                         .build();
                 storeService.createStore(store);

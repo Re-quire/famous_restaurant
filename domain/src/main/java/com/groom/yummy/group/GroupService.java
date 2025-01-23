@@ -47,13 +47,13 @@ public class GroupService {
                 .build();
 
         try {
-            userToGroupRepository.saveUserToGroup(group, user, null, true, AttendanceStatus.APPROVED);
-            return groupRepository.saveGroup(group, storeId);
+            Long groupId = groupRepository.saveGroup(group);
+            userToGroupRepository.saveUserToGroup(groupId, user.getId(), true, AttendanceStatus.APPROVED);
+            return groupId;
         } catch (Exception e) {
             throw new CustomException(GroupErrorCode.GROUP_CREATE_FAILED);
         }
     }
-
 
     public Optional<Group> findGroupById(Long id) {
         return groupRepository.findGroupById(id);
@@ -70,15 +70,15 @@ public class GroupService {
         Group group = groupRepository.findGroupById(groupId)
                 .orElseThrow(() -> new CustomException(GroupErrorCode.GROUP_NOT_FOUND));
 
-        Store store = storeRepository.findStoreById(storeId)
-                .orElseThrow(() -> new CustomException(StoreErrorCode.STORE_NOT_FOUND));
+//        Store store = storeRepository.findStoreById(storeId)
+//                .orElseThrow(() -> new CustomException(StoreErrorCode.STORE_NOT_FOUND));
 
         if (group.getCurrentParticipants() >= group.getMaxParticipants()) {
             throw new CustomException(GroupErrorCode.GROUP_PARTICIPATION_FULL);
         }
         groupRepository.updateGroupParticipants(groupId, group.getCurrentParticipants() + 1);
 
-        userToGroupRepository.saveUserToGroup(group, user, store, false, AttendanceStatus.APPROVED);
+        userToGroupRepository.saveUserToGroup(group.getId(), user.getId(), false, AttendanceStatus.APPROVED);
     }
 
 }

@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 public class CreateGroupRequestDto {
     private Long storeId;
-    private Long userId;
     private String title;
     private String content;
     private Integer maxParticipants;

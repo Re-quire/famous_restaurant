@@ -2,7 +2,7 @@ package com.groom.yummy.domain.store;
 
 import com.groom.yummy.domain.BaseEntity;
 import com.groom.yummy.domain.region.RegionEntity;
-import com.groom.yummy.store.Category;
+import com.groom.yummy.store.Category_;
 import com.groom.yummy.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,13 +22,13 @@ public class StoreEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private Category_ category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id", nullable = false)
     private RegionEntity region;
 
-    private StoreEntity(String name, Category category, RegionEntity region) {
+    private StoreEntity(String name, Category_ category, RegionEntity region) {
         this.name = name;
         this.category = category;
         this.region = region;
@@ -51,7 +51,7 @@ public class StoreEntity extends BaseEntity {
                 .build();
     }
 
-    public static StoreEntity create(String name, Category category, RegionEntity region) {
+    public static StoreEntity create(String name, Category_ category, RegionEntity region) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Store name must not be null or blank");
         }

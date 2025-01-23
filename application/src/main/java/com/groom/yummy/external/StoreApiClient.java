@@ -3,7 +3,7 @@ package com.groom.yummy.external;
 import com.groom.yummy.external.dto.ApiResponse;
 import com.groom.yummy.external.dto.StoreListResponse;
 import com.groom.yummy.external.dto.StoreResponseDto;
-import com.groom.yummy.store.Category;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,9 @@ public class StoreApiClient {
                 .uri(uriBuilder -> uriBuilder.path("/api/v1/store/{id}")
                         .build(storeId))
                 .retrieve()
-                .bodyToMono(StoreResponseDto.class)
-                .block();
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<StoreResponseDto>>() {})
+                .block().data();
+
         return storeResponse;
     }
 
@@ -28,7 +29,7 @@ public class StoreApiClient {
             Category category, Long regionId, String name, int page, int size) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/api/v1/stores")
+                        .path("/api/v1/store")
                         .queryParam("category", category)
                         .queryParam("regionId", regionId)
                         .queryParam("name", name)

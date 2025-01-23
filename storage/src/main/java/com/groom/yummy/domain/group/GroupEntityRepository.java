@@ -17,13 +17,12 @@ import java.util.stream.Collectors;
 public class GroupEntityRepository implements GroupRepository {
 
     private final GroupJpaRepository groupJpaRepository;
-    private final StoreJpaRepository storeJpaRepository;
 
     @Override
-    public Long saveGroup(Group group, Long storeId) {
-        StoreEntity storeEntity = storeJpaRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("Store not found for id: " + storeId));
-        GroupEntity groupEntity = GroupEntity.fromGroupDomain(group, storeEntity);
+    public Long saveGroup(Group group) {
+//        StoreEntity storeEntity = storeJpaRepository.findById(storeId)
+//                .orElseThrow(() -> new IllegalArgumentException("Store not found for id: " + storeId));
+        GroupEntity groupEntity = GroupEntity.fromGroupDomain(group);
         return groupJpaRepository.save(groupEntity).getId();
     }
 
@@ -43,16 +42,17 @@ public class GroupEntityRepository implements GroupRepository {
     public void updateGroupParticipants(Long groupId, int participants) {
         GroupEntity groupEntity = groupJpaRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found for id: " + groupId));
-        groupEntity = GroupEntity.builder()
-                .title(groupEntity.getTitle())
-                .content(groupEntity.getContent())
-                .maxParticipants(groupEntity.getMaxParticipants())
-                .minParticipants(groupEntity.getMinParticipants())
-                .currentParticipants(participants)
-                .meetingDate(groupEntity.getMeetingDate())
-                .meetingStatus(groupEntity.getMeetingStatus())
-                .store(groupEntity.getStore())
-                .build();
-        groupJpaRepository.save(groupEntity);
+//        groupEntity = GroupEntity.builder()
+//                .title(groupEntity.getTitle())
+//                .content(groupEntity.getContent())
+//                .maxParticipants(groupEntity.getMaxParticipants())
+//                .minParticipants(groupEntity.getMinParticipants())
+//                .currentParticipants(participants)
+//                .meetingDate(groupEntity.getMeetingDate())
+//                .meetingStatus(groupEntity.getMeetingStatus())
+//                .storeId(groupEntity.getStoreId())
+//                .build();
+//        groupJpaRepository.save(groupEntity);
+        groupEntity.updateCurrentCount(participants);
     }
 }

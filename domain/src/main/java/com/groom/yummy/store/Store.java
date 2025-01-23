@@ -13,7 +13,7 @@ public class Store {
 
     private Long storeId;
     private String name;
-    private Category category;
+    private Category_ category;
     private Long regionId;
 
 }

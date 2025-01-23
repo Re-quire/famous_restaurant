@@ -68,7 +68,7 @@ public class TestCreateController {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(120)
+                .maxAge(7200000)
                 .sameSite("Strict")
                 .build();
 

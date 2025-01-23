@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public enum Category {
+public enum Category_ {
     // TODO : apiCode 수정
     CHICKEN("001","치킨"),
     CHINESE("002","중식"),
@@ -27,20 +27,20 @@ public enum Category {
     private final String apiCode;
     private final String description;
 
-    private static final Map<String, Category> API_CODE_TO_CATEGORY = new HashMap<>();
+    private static final Map<String, Category_> API_CODE_TO_CATEGORY = new HashMap<>();
 
     static {
-        for(Category category: values()){
+        for(Category_ category: values()){
             API_CODE_TO_CATEGORY.put(category.getApiCode(), category);
         }
     }
 
-    Category(String apiCode, String description) {
+    Category_(String apiCode, String description) {
         this.apiCode = apiCode;
         this.description = description;
     }
 
-    public static Category fromApiCode(String apiCode) {
+    public static Category_ fromApiCode(String apiCode) {
         return API_CODE_TO_CATEGORY.get(apiCode);
     }
 
@@ -49,12 +49,12 @@ public enum Category {
         return String.format("%s (%s) ", apiCode, description);
     }
 
-    public static boolean isValidCategory(Category category) {
+    public static boolean isValidCategory(Category_ category) {
         return API_CODE_TO_CATEGORY.containsValue(category);
     }
 
-    public static Category fromDescription(String description) {
-        for (Category category : Category.values()) {
+    public static Category_ fromDescription(String description) {
+        for (Category_ category : Category_.values()) {
             if (category.getDescription().equals(description)) {
                 return category;
             }
