@@ -42,13 +42,11 @@ public class GroupEntity extends BaseEntity {
     @Column(nullable = false)
     private MeetingStatus meetingStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
-    private StoreEntity store;
+    private Long storeId;
 
     @Builder
     public GroupEntity(String title, String content, Integer maxParticipants, Integer minParticipants,
-                       Integer currentParticipants, LocalDateTime meetingDate, MeetingStatus meetingStatus, StoreEntity store) {
+                       Integer currentParticipants, LocalDateTime meetingDate, MeetingStatus meetingStatus, Long storeId) {
         this.title = title;
         this.content = content;
         this.maxParticipants = maxParticipants;
@@ -56,7 +54,11 @@ public class GroupEntity extends BaseEntity {
         this.currentParticipants = currentParticipants;
         this.meetingDate = meetingDate;
         this.meetingStatus = meetingStatus;
-        this.store = store;
+        this.storeId = storeId;
+    }
+
+    public void updateCurrentCount(int count){
+        this.currentParticipants = count;
     }
 
     public static Group toGroupDomain(GroupEntity groupEntity) {
@@ -69,11 +71,11 @@ public class GroupEntity extends BaseEntity {
                 .currentParticipants(groupEntity.getCurrentParticipants())
                 .meetingDate(groupEntity.getMeetingDate())
                 .meetingStatus(groupEntity.getMeetingStatus())
-                .storeId(groupEntity.getStore().getId())
+                .storeId(groupEntity.getStoreId())
                 .build();
     }
 
-    public static GroupEntity fromGroupDomain(Group group, StoreEntity store) {
+    public static GroupEntity fromGroupDomain(Group group) {
         return GroupEntity.builder()
                 .title(group.getTitle())
                 .content(group.getContent())
@@ -82,7 +84,7 @@ public class GroupEntity extends BaseEntity {
                 .currentParticipants(group.getCurrentParticipants())
                 .meetingDate(group.getMeetingDate())
                 .meetingStatus(group.getMeetingStatus())
-                .store(store)
+                .storeId(group.getStoreId())
                 .build();
     }
 }

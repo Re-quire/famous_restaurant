@@ -7,7 +7,6 @@ import lombok.Builder;
 public record StoreResponseDto(
         Long id,
         String name,
-        Long storeId,
         String category,
         Long regionId
 ) {

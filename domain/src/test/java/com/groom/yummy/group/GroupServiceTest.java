@@ -1,6 +1,8 @@
 package com.groom.yummy.group;
 
 import com.groom.yummy.exception.CustomException;
+import com.groom.yummy.store.Store;
+import com.groom.yummy.store.StoreRepository;
 import com.groom.yummy.user.User;
 import com.groom.yummy.user.UserRepository;
 import com.groom.yummy.usertogroup.AttendanceStatus;
@@ -9,9 +11,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,48 +38,51 @@ public class GroupServiceTest {
     @Mock
     private UserToGroupRepository userToGroupRepository;
 
-    @DisplayName("사용자는 소모임을 생성할 수 있다.")
+    @Mock
+    private StoreRepository storeRepository;
+
+    @DisplayName("User can create a group.")
     @Order(1)
     @Test
-    void 소모임_생성_테스트() {
-        //Given
+    void createGroupTest() {
+        // Given
+        Long storeId = 10L;
+        Long userId = 1L;
+        String title = "Go to Goorm store";
+        String content = "yummy yummy yummy yummy yummy";
+        Integer maxParticipants = 4;
+        Integer minParticipants = 3;
+        LocalDateTime meetingDate = LocalDateTime.now();
+
         User user = User.builder()
-                .id(1L)
+                .id(userId)
                 .email("Goorm@gmail.com")
                 .nickname("Goorm")
                 .role("USER")
-                .groupJoinCount(10L)
-                .groupAttendanceCount(8L)
                 .isDeleted(false)
                 .build();
 
-        Group group = Group.builder()
-                .title("Go to Goorm store")
-                .content("yummy yummy yummy yummy yummy")
-                .maxParticipants(4)
-                .minParticipants(3)
-                .storeId(10L)
-                .build();
-
-        when(userRepository.findByEmail(Mockito.eq("Goorm@gmail.com")))
+        when(userRepository.findById(userId))
                 .thenReturn(Optional.of(user));
-
-        when(groupRepository.saveGroup(any(Group.class), anyLong()))
+        when(groupRepository.saveGroup(any(Group.class)))
                 .thenReturn(1L);
 
         // When
-        Long groupId = groupService.createGroup(group, user.getEmail());
+        Long groupId = groupService.createGroup(storeId, userId, title, content, maxParticipants, minParticipants, meetingDate);
 
         // Then
         assertEquals(1L, groupId);
         verify(groupRepository, times(1))
-                .saveGroup(any(Group.class), anyLong());
+                .saveGroup(any(Group.class));
+        verify(userToGroupRepository, times(1))
+                .saveUserToGroup(any(Long.class), any(Long.class),  eq(true), eq(AttendanceStatus.APPROVED));
     }
 
-    @DisplayName("사용자는 소모임 상세 정보를 조회할 수 있다.")
+
+    @DisplayName("User can view group details.")
     @Order(2)
     @Test
-    void 소모임_상세_조회_테스트() {
+    void viewGroupDetailsTest() {
         // Given
         Long groupId = 1L;
         Group group = Group.builder()
@@ -101,14 +106,14 @@ public class GroupServiceTest {
         verify(groupRepository, times(1)).findGroupById(groupId);
     }
 
-    @DisplayName("사용자는 소모임에 참여할 수 있다.")
+    @DisplayName("User can join a group.")
     @Order(3)
     @Test
-    void 소모임_참여_테스트() {
+    void joinGroupTest() {
         // Given
         Long groupId = 1L;
         Long userId = 1L;
-        String userEmail = "Goorm@gmail.com";
+        Long storeId = 10L;
 
         Group group = Group.builder()
                 .id(groupId)
@@ -117,77 +122,80 @@ public class GroupServiceTest {
                 .maxParticipants(4)
                 .minParticipants(3)
                 .currentParticipants(2)
-                .storeId(10L)
+                .storeId(storeId)
                 .build();
 
         User user = User.builder()
                 .id(userId)
-                .email(userEmail)
+                .email("Goorm@gmail.com")
                 .nickname("Goorm")
                 .role("USER")
-                .groupJoinCount(10L)
-                .groupAttendanceCount(8L)
                 .isDeleted(false)
                 .build();
 
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
+        Store store = new Store(); // Store 객체 생성
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(groupRepository.findGroupById(groupId)).thenReturn(Optional.of(group));
+        when(storeRepository.findStoreById(storeId)).thenReturn(Optional.of(store)); // Mock 동작 추가
+
+        // Mock UserToGroupRepository 동작 설정
+        doNothing().when(userToGroupRepository)
+                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
 
         // When
-        groupService.joinGroup(groupId, userId, userEmail);
+        groupService.joinGroup(groupId, userId, storeId);
 
         // Then
         verify(groupRepository, times(1)).updateGroupParticipants(eq(groupId), eq(3));
         verify(userToGroupRepository, times(1))
-                .save(eq(group), eq(user), eq(false), eq(AttendanceStatus.APPROVED)); // save 호출 검증
+                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
     }
 
-
-    @DisplayName("소모임 참여 시 참가 인원이 초과되면 예외가 발생한다.")
+    @DisplayName("Group join fails when participant limit exceeded.")
     @Order(4)
     @Test
-    void 소모임_참여_참가인원_초과_테스트() {
+    void joinGroupParticipantLimitExceededTest() {
         // Given
         Long groupId = 1L;
         Long userId = 1L;
-        String userEmail = "Goorm@gmail.com";
+        Long storeId = 10L;
 
         Group group = Group.builder()
                 .id(groupId)
                 .title("Go to Goorm store")
                 .content("yummy yummy")
                 .maxParticipants(4)
-                .minParticipants(3)
-                .currentParticipants(4)
-                .storeId(10L)
+                .currentParticipants(4) // 참여 인원 초과
+                .storeId(storeId)
                 .build();
 
         User user = User.builder()
                 .id(userId)
-                .email(userEmail)
+                .email("Goorm@gmail.com")
                 .nickname("Goorm")
-                .role("USER")
-                .groupJoinCount(10L)
-                .groupAttendanceCount(8L)
-                .isDeleted(false)
                 .build();
 
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
+        Store store = new Store(); // Store 객체 생성
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(groupRepository.findGroupById(groupId)).thenReturn(Optional.of(group));
+        when(storeRepository.findStoreById(storeId)).thenReturn(Optional.of(store)); // Mock 동작 추가
 
         // When
         CustomException exception = assertThrows(CustomException.class,
-                () -> groupService.joinGroup(groupId, userId, userEmail));
+                () -> groupService.joinGroup(groupId, userId, storeId));
 
         // Then
         assertEquals("참가 인원이 가득 찼습니다.", exception.getMessage());
         verify(groupRepository, never()).updateGroupParticipants(anyLong(), anyInt());
     }
 
-    @DisplayName("소모임 리스트 조회 테스트")
+
+    @DisplayName("Retrieve group list test.")
     @Order(5)
     @Test
-    void 소모임_리스트_조회_테스트() {
+    void retrieveGroupListTest() {
         // Given
         String category = "KOREAN";
         String regionCode = "SEOUL";
@@ -200,7 +208,6 @@ public class GroupServiceTest {
                         .title("Go to Goorm store")
                         .content("yummy yummy")
                         .maxParticipants(4)
-                        .minParticipants(3)
                         .currentParticipants(2)
                         .storeId(10L)
                         .build()

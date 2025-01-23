@@ -15,9 +15,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public class UserToGroupEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(nullable = false)
     private boolean isLeader;
