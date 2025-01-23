@@ -3,6 +3,7 @@ package com.groom.yummy.external;
 import com.groom.yummy.external.dto.ApiResponse;
 import com.groom.yummy.external.dto.StoreListResponse;
 import com.groom.yummy.external.dto.StoreResponseDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;

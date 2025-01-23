@@ -1,12 +1,14 @@
 package com.groom.yummy.external.dto;
 
-import com.groom.yummy.store.Category_;
+
 import lombok.Builder;
+import com.groom.yummy.external.Category;
+
 
 @Builder
 public record StoreRequestDto(
         String name,
-        Category_ category,
+        Category category,
         Long regionId
 ) {
 }
