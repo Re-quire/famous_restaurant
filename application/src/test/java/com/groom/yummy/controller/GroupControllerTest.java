@@ -229,7 +229,6 @@ class GroupControllerTest {
         Long storeId = 10L;
 
         JoinGroupRequestDto joinRequestDto = JoinGroupRequestDto.builder()
-                .userId(1L)
                 .storeId(storeId)
                 .build();
 
