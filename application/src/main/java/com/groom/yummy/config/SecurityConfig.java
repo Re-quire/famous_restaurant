@@ -47,6 +47,7 @@ public class SecurityConfig {
         // HTTP Basic 인증 방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers( "/login/**", "/oauth2/**", "/oauth2/authorization/**").permitAll()
