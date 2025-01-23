@@ -6,14 +6,14 @@ import com.groom.yummy.group.dto.request.CreateGroupRequestDto;
 import com.groom.yummy.group.dto.request.JoinGroupRequestDto;
 import com.groom.yummy.group.dto.response.GroupDetailResponseDto;
 import com.groom.yummy.group.dto.response.GroupResponseDto;
+import com.groom.yummy.oauth2.auth.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,15 +30,23 @@ public class GroupController {
     @Operation(summary = "소모임 생성", description = "소모임을 생성합니다.")
     @PostMapping
     public ResponseEntity<ResponseDto<GroupResponseDto>> createGroup(
-            @Valid @RequestBody CreateGroupRequestDto requestDto
+            @Valid @RequestBody CreateGroupRequestDto requestDto,
+            @AuthenticationPrincipal LoginUser loginUser
     ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
+        Long userId = loginUser.getUserId();
+        Long groupId = groupService.createGroup(
+                requestDto.getStoreId(),
+                userId,
+                requestDto.getTitle(),
+                requestDto.getContent(),
+                requestDto.getMaxParticipants(),
+                requestDto.getMinParticipants(),
+                requestDto.getMeetingDate()
+        );
 
-        Long groupId = groupService.createGroup(requestDto.toGroupDomain(), userEmail);
         GroupResponseDto response = groupService.findGroupById(groupId)
                 .map(GroupResponseDto::fromGroupDomain)
-                .orElseThrow(() -> new IllegalArgumentException("소모임 생성 실패"));
+                .orElseThrow();
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDto<>(response, "소모임 생성 성공"));
@@ -76,13 +84,11 @@ public class GroupController {
     @PostMapping("/{groupId}/join")
     public ResponseEntity<ResponseDto<Void>> joinGroup(
             @PathVariable Long groupId,
-            @Valid @RequestBody JoinGroupRequestDto request
+            @Valid @RequestBody JoinGroupRequestDto requestDto,
+            @AuthenticationPrincipal LoginUser loginUser
     ) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-
-        groupService.joinGroup(groupId, request.getUserId(), userEmail);
+        Long userId = loginUser.getUserId();
+        groupService.joinGroup(groupId, userId, requestDto.getStoreId());
         return ResponseEntity.ok(new ResponseDto<>(null, "소모임 참여 성공"));
     }
 }

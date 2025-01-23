@@ -9,5 +9,6 @@ import lombok.*;
 @Builder
 public class JoinGroupRequestDto {
     private Long userId;
+    private Long storeId;
 }
 

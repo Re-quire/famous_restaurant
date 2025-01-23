@@ -48,24 +48,6 @@ public class StoreController {
                     .body(new ResponseDto<>(null, "가게 데이터 동기화 중 오류 발생"));
         }
     }
-    @Operation(summary = "가게 정보 조회", description = "가게 id로 가게를 조회합니다.")
-    @GetMapping("/{storeId}")
-    public ResponseEntity<ResponseDto<StoreResponseDto>> getStore(@PathVariable("storeId") Long storeId) {
-        StoreResponseDto storeResponseDTO = storeApiClient.getStoreByApi(storeId);
-        return ResponseEntity.ok(ResponseDto.of(storeResponseDTO,"storeId로 가게 조회 성공"));
-    }
-
-    @Operation(summary = "가게 조회", description = "가게들을 정렬 기준에 맞게 조회합니다.")
-    @GetMapping
-    public ResponseEntity<ApiResponse<StoreListResponse>> getStoresByFilters(
-            @RequestParam(name = "category", required = false) Category category,
-            @RequestParam(name = "regionId", required = false) Long regionId,
-            @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
-        ApiResponse<StoreListResponse> storeListResponseApiResponse = storeApiClient.getStoresByFilters(category, regionId,name,page,size);
-        return ResponseEntity.ok(storeListResponseApiResponse);
-    }
 }
 
 

@@ -11,12 +11,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class CreateGroupRequestDto {
+    private Long storeId;
+    private Long userId;
     private String title;
     private String content;
     private Integer maxParticipants;
     private Integer minParticipants;
     private LocalDateTime meetingDate;
-    private Long storeId;
 
     public Group toGroupDomain() {
         return Group.builder()
@@ -24,7 +25,6 @@ public class CreateGroupRequestDto {
                 .content(this.content)
                 .maxParticipants(this.maxParticipants)
                 .minParticipants(this.minParticipants)
-                .currentParticipants(1)
                 .meetingDate(this.meetingDate)
                 .storeId(this.storeId)
                 .build();

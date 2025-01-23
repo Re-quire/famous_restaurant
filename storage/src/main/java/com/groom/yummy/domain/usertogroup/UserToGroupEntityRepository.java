@@ -1,13 +1,13 @@
 package com.groom.yummy.domain.usertogroup;
 
 import com.groom.yummy.domain.group.GroupEntity;
-import com.groom.yummy.domain.group.GroupJpaRepository;
 import com.groom.yummy.domain.store.StoreEntity;
 import com.groom.yummy.domain.store.StoreJpaRepository;
 import com.groom.yummy.domain.user.UserEntity;
-import com.groom.yummy.usertogroup.AttendanceStatus;
 import com.groom.yummy.group.Group;
+import com.groom.yummy.store.Store;
 import com.groom.yummy.user.User;
+import com.groom.yummy.usertogroup.AttendanceStatus;
 import com.groom.yummy.usertogroup.UserToGroup;
 import com.groom.yummy.usertogroup.UserToGroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class UserToGroupEntityRepository implements UserToGroupRepository {
     private final StoreJpaRepository storeJpaRepository;
 
     @Override
-    public void save(Group group, User user, boolean isLeader, AttendanceStatus attendanceStatus) {
+    public void saveUserToGroup(Group group, User user, Store store, boolean isLeader, AttendanceStatus attendanceStatus) {
         StoreEntity storeEntity = group.getStoreId() != null
                 ? storeJpaRepository.findById(group.getStoreId())
                 .orElseThrow(() -> new IllegalArgumentException("Store not found for id: " + group.getStoreId()))
