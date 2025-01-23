@@ -137,11 +137,10 @@ public class GroupServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(groupRepository.findGroupById(groupId)).thenReturn(Optional.of(group));
-        when(storeRepository.findStoreById(storeId)).thenReturn(Optional.of(store)); // Mock 동작 추가
 
         // Mock UserToGroupRepository 동작 설정
         doNothing().when(userToGroupRepository)
-                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
+                .saveUserToGroup(eq(groupId), eq(userId), eq(false), eq(AttendanceStatus.APPROVED));
 
         // When
         groupService.joinGroup(groupId, userId, storeId);
@@ -149,7 +148,7 @@ public class GroupServiceTest {
         // Then
         verify(groupRepository, times(1)).updateGroupParticipants(eq(groupId), eq(3));
         verify(userToGroupRepository, times(1))
-                .saveUserToGroup(eq(group.getId()), eq(user.getId()),  eq(false), eq(AttendanceStatus.APPROVED));
+                .saveUserToGroup(eq(groupId), eq(userId), eq(false), eq(AttendanceStatus.APPROVED));
     }
 
     @DisplayName("Group join fails when participant limit exceeded.")
@@ -180,7 +179,6 @@ public class GroupServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(groupRepository.findGroupById(groupId)).thenReturn(Optional.of(group));
-        when(storeRepository.findStoreById(storeId)).thenReturn(Optional.of(store)); // Mock 동작 추가
 
         // When
         CustomException exception = assertThrows(CustomException.class,
