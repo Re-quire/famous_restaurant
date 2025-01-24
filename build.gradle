@@ -1,25 +1,84 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+    id 'jacoco'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 allprojects {
-	repositories {
-		mavenCentral()
-	}
+    group = 'com.groom.yummy'
+    version = '1.0.0' // 공통 버전 설정
+    repositories {
+        mavenCentral()
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.1"
-	}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        finalizedBy tasks.named("${project.name}JacocoTestReport")
+    }
+
+    tasks.register("${project.name}JacocoTestReport", JacocoReport) {
+        dependsOn tasks.named("test")
+        reports {
+            xml.required.set(true)
+            xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/${project.name}-jacoco.xml"))
+        }
+        classDirectories.setFrom(
+                fileTree(dir: layout.buildDirectory.dir("classes/java/main")).matching {
+                    exclude(
+                            "**/dto/**",         // DTO 제외
+                            "**/config/**",      // Config 제외
+                            "**/exception/**",   // Exception 제외
+                            "**/*Application*",  // Main Application 제외
+                            "**/event/**",       // Event 제외
+                            "**/response/**",    // Response 관련 클래스 제외
+                            "com/groom/yummy/domain/group/**",  // group 도메인 제외
+                            "com/groom/yummy/domain/reply/**"   // reply 도메인 제외
+                    )
+                }
+        )
+    }
 }
 
-bootJar {
-	enabled = false
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn subprojects.test
+
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation = file("${buildDir}/reports/jacoco/html")
+    }
+
+    additionalSourceDirs.from files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.setFrom(
+            files(
+                    subprojects.collect { subproject ->
+                        fileTree(dir: "${subproject.buildDir}/classes/java/main").matching {
+                            exclude(
+                                    "${subproject.name}/com/groom/yummy/domain/group/**",  // group 도메인 제외
+                                    "${subproject.name}/com/groom/yummy/domain/reply/**"  // reply 도메인 제외
+                            )
+                        }
+                    }
+            )
+    )
+    executionData.from files(subprojects.jacocoTestReport.executionData)
 }
 
-jar {
-	enabled = false
-}
+

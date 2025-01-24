@@ -1,77 +1,23 @@
-# famous_restaurant
+# Yummy
+> 지역 맛집 탐방 소모임 형성 서비스
 
-Re:quire's famous restaurant service rep
+# 🚀 기능
+## 핵심 기능
+### 카카오 소셜 로그인 
+### 실제 가게 정보 연동 API 구현
+### 소모임 생성 및 참가
+### 소모임 댓글 등록
 
----
+## API 명세
+<img width="1063" alt="Screenshot 2025-01-24 at 2 42 43 PM" src="https://github.com/user-attachments/assets/62151372-3803-4da9-90f0-c85db5983ffc" />
 
-# 커밋 컨벤션
+# ⿳ ERD
+<img width="1066" alt="맛집 소모임 ERD-white" src="https://github.com/user-attachments/assets/96ecbd99-5723-444c-bff4-0dfb31414c3c" />
 
-    - 예시
-        - feat: hyungjun#12-feat-create-user-api - #2
+# 🏛️ 멀티 모듈 설계 및 흐름도
+<img width="806" alt="사용성 기반 흐름도" src="https://github.com/user-attachments/assets/cb8e38b0-ee84-4803-9a12-41020ec9a637" />
+<img width="750" alt="각 모듈 구성 및 흐름도" src="https://github.com/user-attachments/assets/999c4b59-17fa-4f58-8a78-f955b1e208a7" />
 
-- feat: 새로운 기능 추가
-- fix: 버그 수정
-- docs: 문서 수정
-- style: 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
-- refactor: 코드 리팩토링
-- test: 테스트 코드, 리팩토링 테스트 코드 추가
-- chore: 빌드 업무 수정, 패키지 매니저 수정
+# 🗺️ 아키텍쳐
+<img width="834" alt="아키텍쳐" src="https://github.com/user-attachments/assets/da8b9a1c-85c9-49fc-bc19-2094ed7ab0c0" />
 
-# 이슈 템플릿
-
-        - issue 제목
-            - 예시: feat: 이슈 정리
-        - issue 템플릿
-
-            ```markdown
-            ## 📋 이슈 내용
-
-            ## ✅ 체크리스트
-
-            ## 📚 레퍼런스
-
-            ```
-        - 제목 예시
-            - add: UI button 구현
-
-# branch 규칙
-
-    - 각자 영어이름#이슈번호-이슈타입-이슈제목
-    - 예시: hyungjun#12-feat-create-user-api
-
-    - 종류: 메시지 - #이슈번호
-    - 예시
-        - feat: hyungjun#12-feat-create-user-api - #2
-
-# PR 템플릿
-
-    - PR 템플릿
-
-        ```markdown
-        ## 📋 이슈 번호
-
-        ## 🛠 구현 사항
-
-        ## 📚 기타
-
-        ```
-
-# merge 컨벤션
-
-    - merge: 브랜치 이름 - #Issue 번호 혹은 PR 번호
-    - 예시
-        - merge: main <-hyungjun#1-feat-user-controller
-
-# ERD
-
----
-![맛집 소모임 ERD](https://github.com/user-attachments/assets/2442f3aa-67db-4933-af94-32f98a855d20)
-
-
-# 🗺️아키텍처
-
----
-
-# 💡기능
-
----
