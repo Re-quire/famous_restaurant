@@ -4,7 +4,14 @@ plugins {
     id 'io.spring.dependency-management'
 }
 
+group = 'com.groom'
 version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 dependencies {
     // 모듈 간 의존성
@@ -51,6 +58,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 
+    implementation project(':domain')
     // Netty
     implementation "io.netty:netty-resolver-dns-native-macos:4.1.110.Final:osx-x86_64"
 }
